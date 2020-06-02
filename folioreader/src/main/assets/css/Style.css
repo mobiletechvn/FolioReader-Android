@@ -236,17 +236,17 @@ html.nightMode .highlight_underline {border-bottom: 2px solid rgba(240, 40, 20, 
 
 @font-face {
     font-family: 'lato';
-    src: url('file:///android_asset/fonts/lato/Lato-Regular.ttf');
+    src: url('file:///android_asset/fonts/roboto/Roboto-Regular.ttf');
 }
 
 @font-face {
     font-family: 'lora';
-    src: url('file:///android_asset/fonts/lora/Lora-Regular.ttf');
+    src: url('file:///android_asset/fonts/iowan/IowanOldStBTRoman.ttf');
 }
 
 @font-face {
     font-family: 'raleway';
-    src: url('file:///android_asset/fonts/raleway/Raleway-Regular.ttf');
+    src: url('file:///android_asset/fonts/time/time.ttf');
 }
 
 .andada {

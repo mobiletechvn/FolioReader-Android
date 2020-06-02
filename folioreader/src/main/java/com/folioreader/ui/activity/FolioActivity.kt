@@ -73,6 +73,7 @@ import org.readium.r2.streamer.parser.EpubParser
 import org.readium.r2.streamer.parser.PubBox
 import org.readium.r2.streamer.server.Server
 import java.lang.ref.WeakReference
+import android.widget.ImageView
 
 class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControllerCallback,
     View.OnSystemUiVisibilityChangeListener {
@@ -83,6 +84,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     private var actionBar: ActionBar? = null
     private var appBarLayout: FolioAppBarLayout? = null
     private var toolbar: Toolbar? = null
+    // private var logo: Int = 0
     private var distractionFreeMode: Boolean = false
     private var handler: Handler? = null
 
@@ -297,18 +299,43 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         }
     }
 
+
+
     private fun initActionBar() {
 
         appBarLayout = findViewById(R.id.appBarLayout)
         toolbar = findViewById(R.id.toolbar)
+        val image_view = findViewById(R.id.btn_home) as ImageView
+        image_view.setOnClickListener {
+            onBackPressed()
+        }
         setSupportActionBar(toolbar)
         actionBar = supportActionBar
-
         val config = AppUtil.getSavedConfig(applicationContext)!!
 
         val drawable = ContextCompat.getDrawable(this, R.drawable.ic_drawer)
         UiUtil.setColorIntToDrawable(config.themeColor, drawable!!)
         toolbar!!.navigationIcon = drawable
+        if (getSupportActionBar() != null){
+                // getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true);
+                // getSupportActionBar()!!.setDisplayShowHomeEnabled(true);
+                getSupportActionBar()!!.setDisplayShowTitleEnabled(false);
+
+        }
+        // actionBar!!.setLogo(R.drawable.ic_drawer);
+// actionBar!!.setDisplayUseLogoEnabled(true);
+// actionBar!!.setDisplayShowHomeEnabled(false);
+
+        // toolbar!!.setLogo(R.drawable.ic_drawer)
+
+        // val buttonClick= findViewById<Button>(R.id.itemConfig)
+        // buttonClick!!.setOnClickListener {
+        // }
+// val title = toolbar!!.getTitle()!!;
+//             Log.v(LOG_TAG, "-> onOptionsItemSelected -> ${title}")
+// title.setOnClickListener {
+//     // Do some work here
+// }
 
         if (config.isNightMode) {
             setNightMode()
@@ -497,6 +524,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         r2StreamerServer!!.start()
 
         FolioReader.initRetrofit(streamerUrl)
+        hideSystemUI()
     }
 
     private fun onBookInitFailure() {

@@ -106,8 +106,8 @@
     <string name="search_failure_text">Something wen\'t wrong.</string>
 
     <plurals name="numberOfSearchResults">
-        <item quantity="one">%d result</item>
-        <item quantity="other">%d results</item>
+        <item quantity="one">%d kết quả</item>
+        <item quantity="other">%d kết quả</item>
     </plurals>
 
     <!-- JS Calls -->
