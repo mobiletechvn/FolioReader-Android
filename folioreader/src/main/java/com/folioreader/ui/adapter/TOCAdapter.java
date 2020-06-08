@@ -14,6 +14,7 @@ import com.folioreader.Config;
 import com.folioreader.R;
 import com.folioreader.model.TOCLinkWrapper;
 import com.folioreader.util.MultiLevelExpIndListAdapter;
+import android.util.Log;
 
 import java.util.ArrayList;
 

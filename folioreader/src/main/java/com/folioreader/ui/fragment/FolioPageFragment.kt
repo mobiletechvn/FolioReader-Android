@@ -51,7 +51,9 @@ import org.readium.r2.shared.Link
 import org.readium.r2.shared.Locations
 import java.util.*
 import java.util.regex.Pattern
-
+import android.app.AlertDialog;
+import android.widget.Toast
+import android.content.DialogInterface
 /**
  * Created by mahavir on 4/2/16.
  */
@@ -111,6 +113,7 @@ class FolioPageFragment : Fragment(),
     private var spineIndex = -1
     private var mBookTitle: String? = null
     private var mIsPageReloaded: Boolean = false
+    private var popupShowed: Boolean = false
 
     private var highlightStyle: String? = null
 
@@ -173,6 +176,10 @@ class FolioPageFragment : Fragment(),
         initAnimations()
         initWebView()
         updatePagesLeftTextBg()
+
+
+
+
 
         return mRootView
     }
@@ -328,7 +335,6 @@ class FolioPageFragment : Fragment(),
     }
 
     fun scrollToLast() {
-
         val isPageLoading = loadingView == null || loadingView!!.visibility == View.VISIBLE
         Log.v(LOG_TAG, "-> scrollToLast -> isPageLoading = $isPageLoading")
 
@@ -336,6 +342,28 @@ class FolioPageFragment : Fragment(),
             loadingView!!.show()
             mWebview!!.loadUrl("javascript:scrollToLast()")
         }
+    }
+
+    fun showRemindPurchase() {
+            val dialogBuilder = AlertDialog.Builder(getActivity())
+            dialogBuilder.setMessage("Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!")
+                    // if the dialog is cancelable
+                    .setCancelable(true)
+                    .setPositiveButton("Mua ngay", DialogInterface.OnClickListener {
+                        dialog, id ->
+                        val openURL = Intent(android.content.Intent.ACTION_VIEW)
+                        openURL.data = Uri.parse("https://www.tutorialkart.com/")
+                        startActivity(openURL)
+                        dialog.dismiss()
+                    })
+                    .setNegativeButton("Để sau", DialogInterface.OnClickListener {
+                        dialog, id ->
+                        dialog.dismiss()
+
+                    })
+            val alert = dialogBuilder.create()
+            alert.setTitle("")
+            alert.show()
     }
 
     fun scrollToFirst() {
@@ -488,6 +516,9 @@ class FolioPageFragment : Fragment(),
                     loadingView!!.hide()
                 }
             }
+
+            Log.d("length", mActivityCallback!!.currentChapterIndex.toString())
+
         }
 
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
@@ -622,7 +653,6 @@ class FolioPageFragment : Fragment(),
             LOG_TAG, "-> setHorizontalPageCount = " + horizontalPageCount
                     + " -> " + spineItem.href
         )
-
         mWebview!!.setHorizontalPageCount(horizontalPageCount)
     }
 
@@ -676,6 +706,16 @@ class FolioPageFragment : Fragment(),
                 Locale.US,
                 pagesRemainingStrFormat, pagesRemaining
             )
+
+               Log.v(LOG_TAG, "-> chap -> ${this.popupShowed}")
+
+            if (mActivityCallback!!.currentChapterIndex > 0 && pagesRemaining == 1) {
+               Log.v(LOG_TAG, "-> pagesRemaining -> ${pagesRemaining}")
+               this.popupShowed = true
+               popupShowed = true
+               showRemindPurchase()
+            } 
+            
 
             val minutesRemaining = Math.ceil((pagesRemaining * mTotalMinutes).toDouble() / totalPages).toInt()
             val minutesRemainingStr: String

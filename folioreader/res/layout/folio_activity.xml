@@ -34,13 +34,12 @@
             app:contentInsetStartWithNavigation="0dp">
                 <ImageView
                     android:id="@+id/btn_home"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
-                    android:layout_margin="16dp"
-                    android:scaleType="centerCrop"
                     app:srcCompat="@drawable/ic_24hmoney" 
+                    android:layout_width="155dp"
+                    android:layout_height="36dp"
+                    android:scaleType="fitXY"
                 />
         </androidx.appcompat.widget.Toolbar>
 

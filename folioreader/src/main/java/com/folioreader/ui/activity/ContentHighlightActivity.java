@@ -19,6 +19,16 @@ import com.folioreader.ui.fragment.TableOfContentFragment;
 import com.folioreader.util.AppUtil;
 import com.folioreader.util.UiUtil;
 import org.readium.r2.shared.Publication;
+import android.util.Log;
+import com.folioreader.ui.fragment.UserInfoDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import com.folioreader.ui.fragment.FolioPageFragment;
+import android.content.DialogInterface;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
 
 public class ContentHighlightActivity extends AppCompatActivity {
     private boolean mIsNightMode;
@@ -39,7 +49,11 @@ public class ContentHighlightActivity extends AppCompatActivity {
         mConfig = AppUtil.getSavedConfig(this);
         mIsNightMode = mConfig != null && mConfig.isNightMode();
         initViews();
+
+
     }
+
+
 
     private void initViews() {
 
@@ -80,10 +94,31 @@ public class ContentHighlightActivity extends AppCompatActivity {
             }
         });
 
+
+        findViewById(R.id.btn_purchase).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showRemindPopup();
+                //  FragmentManager fm = getSupportFragmentManager();
+                // UserInfoDialog userInfoDialog = UserInfoDialog.newInstance("Nguyễn Văn Linh");
+                // userInfoDialog.show(fm, null);
+
+            }
+        });
+
+
+        // findViewById(R.id.btn_purchase).setOnClickListener(new View.OnClickListener() {
+        //     @Override
+        //     public void onClick(View v) {
+        //        // showRemindPopup();
+        //     }
+        // });
+
+
         findViewById(R.id.btn_contents).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadContentFragment();
+               loadContentFragment();
             }
         });
 
@@ -95,6 +130,27 @@ public class ContentHighlightActivity extends AppCompatActivity {
         });
     }
 
+    private void showRemindPopup() {
+        new AlertDialog.Builder(this)
+            .setTitle("")
+            .setMessage("Đã hết nội dung miễn phí, vui lòng mua sách tại trang web")
+
+            // Specifying a listener allows you to take an action before dismissing the dialog.
+            // The dialog is automatically dismissed when a dialog button is clicked.
+            .setPositiveButton("Mua ngay", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) { 
+                    String url = "http://www.stackoverflow.com";
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url)); 
+                    startActivity(i); 
+               }
+             })
+
+            // A null listener allows the button to dismiss the dialog and take no further action.
+            .setNegativeButton("Để sau", null)
+            .show();
+    }
+
     private void loadContentFragment() {
         findViewById(R.id.btn_contents).setSelected(true);
         findViewById(R.id.btn_highlights).setSelected(false);
@@ -103,6 +159,7 @@ public class ContentHighlightActivity extends AppCompatActivity {
                 getIntent().getStringExtra(Constants.BOOK_TITLE));
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.parent, contentFrameLayout);
+        Log.d("=====>", getIntent().getStringExtra(Constants.BOOK_TITLE));
         ft.commit();
     }
 
