@@ -524,7 +524,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         r2StreamerServer!!.start()
 
         FolioReader.initRetrofit(streamerUrl)
-        hideSystemUI()
+        // hideSystemUI()
     }
 
     private fun onBookInitFailure() {
