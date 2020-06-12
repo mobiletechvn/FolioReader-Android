@@ -336,8 +336,15 @@ class FolioPageFragment : Fragment(),
 
     fun scrollToLast() {
         val isPageLoading = loadingView == null || loadingView!!.visibility == View.VISIBLE
-        Log.v(LOG_TAG, "-> scrollToLast -> isPageLoading = $isPageLoading")
-
+        try {
+            val pageIndex = mActivityCallback!!.currentChapterIndex
+            if (pageIndex > 3) {
+              showRemindPurchase()
+            }
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "shouldInterceptRequest failed", e)
+        }
+        
         if (!isPageLoading) {
             loadingView!!.show()
             mWebview!!.loadUrl("javascript:scrollToLast()")
@@ -713,18 +720,20 @@ class FolioPageFragment : Fragment(),
                Log.v(LOG_TAG, "-> pagesRemaining -> ${pagesRemaining}")
                this.popupShowed = true
                popupShowed = true
-               showRemindPurchase()
+               // showRemindPurchase()
             } 
             
 
             val minutesRemaining = Math.ceil((pagesRemaining * mTotalMinutes).toDouble() / totalPages).toInt()
             val minutesRemainingStr: String
+
             if (minutesRemaining > 1) {
                 minutesRemainingStr = String.format(
                     Locale.US, getString(R.string.minutes_left),
                     minutesRemaining
                 )
             } else if (minutesRemaining == 1) {
+
                 minutesRemainingStr = String.format(
                     Locale.US, getString(R.string.minute_left),
                     minutesRemaining
