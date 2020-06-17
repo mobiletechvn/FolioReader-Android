@@ -26,7 +26,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
+import android.util.Log;
 /**
  * Created by avez raj on 9/13/2017.
  */
@@ -37,8 +37,11 @@ public class FolioReader {
     private static FolioReader singleton = null;
 
     public static final String EXTRA_BOOK_ID = "com.folioreader.extra.BOOK_ID";
+    public static final String EXTRA_BOOK_ID2 = "com.folioreader.extra.BOOK_ID2";
+    public static final String EXTRA_LINK = "com.folioreader.extra.LINK";
     public static final String EXTRA_READ_LOCATOR = "com.folioreader.extra.READ_LOCATOR";
     public static final String EXTRA_PORT_NUMBER = "com.folioreader.extra.PORT_NUMBER";
+    public static final String EXTRA_PORT_NUMBER2 = "com.folioreader.extra.PORT_NUMBER2";
     public static final String ACTION_SAVE_READ_LOCATOR = "com.folioreader.action.SAVE_READ_LOCATOR";
     public static final String ACTION_CLOSE_FOLIOREADER = "com.folioreader.action.CLOSE_FOLIOREADER";
     public static final String ACTION_FOLIOREADER_CLOSED = "com.folioreader.action.FOLIOREADER_CLOSED";
@@ -51,6 +54,7 @@ public class FolioReader {
     private ReadLocatorListener readLocatorListener;
     private OnClosedListener onClosedListener;
     private ReadLocator readLocator;
+    private String link;
 
     @Nullable
     public Retrofit retrofit;
@@ -131,18 +135,21 @@ public class FolioReader {
 
     public FolioReader openBook(String assetOrSdcardPath) {
         Intent intent = getIntentFromUrl(assetOrSdcardPath, 0);
+
         context.startActivity(intent);
         return singleton;
     }
 
     public FolioReader openBook(int rawId) {
         Intent intent = getIntentFromUrl(null, rawId);
+
         context.startActivity(intent);
         return singleton;
     }
 
     public FolioReader openBook(String assetOrSdcardPath, String bookId) {
         Intent intent = getIntentFromUrl(assetOrSdcardPath, 0);
+
         intent.putExtra(EXTRA_BOOK_ID, bookId);
         context.startActivity(intent);
         return singleton;
@@ -163,6 +170,7 @@ public class FolioReader {
         intent.putExtra(Config.EXTRA_OVERRIDE_CONFIG, overrideConfig);
         intent.putExtra(EXTRA_PORT_NUMBER, portNumber);
         intent.putExtra(FolioActivity.EXTRA_READ_LOCATOR, (Parcelable) readLocator);
+        intent.putExtra(EXTRA_LINK, this.link);
 
         if (rawId != 0) {
             intent.putExtra(FolioActivity.INTENT_EPUB_SOURCE_PATH, rawId);
@@ -239,6 +247,11 @@ public class FolioReader {
 
     public FolioReader setReadLocator(ReadLocator readLocator) {
         this.readLocator = readLocator;
+        return singleton;
+    }
+
+    public FolioReader setLinkPurchase(String linkPurchase) {
+        this.link = linkPurchase;
         return singleton;
     }
 

@@ -100,6 +100,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     private var spine: List<Link>? = null
 
     private var mBookId: String? = null
+    private var mLink: String? = null
     private var mEpubFilePath: String? = null
     private var mEpubSourceType: EpubSourceType? = null
     private var mEpubRawId = 0
@@ -273,6 +274,8 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         }
 
         mBookId = intent.getStringExtra(FolioReader.EXTRA_BOOK_ID)
+        mLink = intent.getStringExtra(FolioReader.EXTRA_LINK)
+
         mEpubSourceType = intent.extras!!.getSerializable(FolioActivity.INTENT_EPUB_SOURCE_TYPE) as EpubSourceType
         if (mEpubSourceType == EpubSourceType.RAW) {
             mEpubRawId = intent.extras!!.getInt(FolioActivity.INTENT_EPUB_SOURCE_PATH)
@@ -314,7 +317,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         val config = AppUtil.getSavedConfig(applicationContext)!!
 
         val drawable = ContextCompat.getDrawable(this, R.drawable.ic_drawer)
-        UiUtil.setColorIntToDrawable(config.themeColor, drawable!!)
+        UiUtil.setColorIntToDrawable(0x7f050090, drawable!!)
         toolbar!!.navigationIcon = drawable
         if (getSupportActionBar() != null){
                 // getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true);
@@ -323,19 +326,19 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
         }
         // actionBar!!.setLogo(R.drawable.ic_drawer);
-// actionBar!!.setDisplayUseLogoEnabled(true);
-// actionBar!!.setDisplayShowHomeEnabled(false);
+        // actionBar!!.setDisplayUseLogoEnabled(true);
+        // actionBar!!.setDisplayShowHomeEnabled(false);
 
-        // toolbar!!.setLogo(R.drawable.ic_drawer)
+                // toolbar!!.setLogo(R.drawable.ic_drawer)
 
-        // val buttonClick= findViewById<Button>(R.id.itemConfig)
-        // buttonClick!!.setOnClickListener {
+                // val buttonClick= findViewById<Button>(R.id.itemConfig)
+                // buttonClick!!.setOnClickListener {
+                // }
+        // val title = toolbar!!.getTitle()!!;
+        //             Log.v(LOG_TAG, "-> onOptionsItemSelected -> ${title}")
+        // title.setOnClickListener {
+        //     // Do some work here
         // }
-// val title = toolbar!!.getTitle()!!;
-//             Log.v(LOG_TAG, "-> onOptionsItemSelected -> ${title}")
-// title.setOnClickListener {
-//     // Do some work here
-// }
 
         if (config.isNightMode) {
             setNightMode()
@@ -389,9 +392,9 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         menuInflater.inflate(R.menu.menu_main, menu)
 
         val config = AppUtil.getSavedConfig(applicationContext)!!
-        UiUtil.setColorIntToDrawable(config.themeColor, menu.findItem(R.id.itemSearch).icon)
-        UiUtil.setColorIntToDrawable(config.themeColor, menu.findItem(R.id.itemConfig).icon)
-        UiUtil.setColorIntToDrawable(config.themeColor, menu.findItem(R.id.itemTts).icon)
+        UiUtil.setColorIntToDrawable(0x7f050090, menu.findItem(R.id.itemSearch).icon)
+        UiUtil.setColorIntToDrawable(0x7f050090, menu.findItem(R.id.itemConfig).icon)
+        UiUtil.setColorIntToDrawable(0x7f050090, menu.findItem(R.id.itemTts).icon)
 
         if (!config.isShowTts)
             menu.findItem(R.id.itemTts).isVisible = false
@@ -451,8 +454,8 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         }
 
         intent.putExtra(FolioReader.EXTRA_BOOK_ID, mBookId)
+        intent.putExtra(FolioReader.EXTRA_LINK, mLink)
         intent.putExtra(Constants.BOOK_TITLE, bookFileName)
-
         startActivityForResult(intent, RequestCode.CONTENT_HIGHLIGHT.value)
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up)
     }
@@ -524,7 +527,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         r2StreamerServer!!.start()
 
         FolioReader.initRetrofit(streamerUrl)
-        hideSystemUI()
+        // hideSystemUI()
     }
 
     private fun onBookInitFailure() {
@@ -583,7 +586,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         mFolioPageViewPager!!.setDirection(newDirection)
         mFolioPageFragmentAdapter = FolioPageFragmentAdapter(
             supportFragmentManager,
-            spine, bookFileName, mBookId
+            spine, bookFileName, mBookId, mLink
         )
         mFolioPageViewPager!!.adapter = mFolioPageFragmentAdapter
         mFolioPageViewPager!!.currentItem = currentChapterIndex
@@ -927,7 +930,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         mFolioPageViewPager!!.setDirection(direction)
         mFolioPageFragmentAdapter = FolioPageFragmentAdapter(
             supportFragmentManager,
-            spine, bookFileName, mBookId
+            spine, bookFileName, mBookId, mLink
         )
         mFolioPageViewPager!!.adapter = mFolioPageFragmentAdapter
 

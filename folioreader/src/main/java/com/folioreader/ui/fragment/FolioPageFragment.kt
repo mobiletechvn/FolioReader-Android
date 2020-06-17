@@ -72,12 +72,14 @@ class FolioPageFragment : Fragment(),
         const val BUNDLE_SEARCH_LOCATOR = "BUNDLE_SEARCH_LOCATOR"
 
         @JvmStatic
-        fun newInstance(spineIndex: Int, bookTitle: String, spineRef: Link, bookId: String): FolioPageFragment {
+        fun newInstance(spineIndex: Int, bookTitle: String, spineRef: Link, bookId: String, link: String): FolioPageFragment {
             val fragment = FolioPageFragment()
             val args = Bundle()
             args.putInt(BUNDLE_SPINE_INDEX, spineIndex)
             args.putString(BUNDLE_BOOK_TITLE, bookTitle)
             args.putString(FolioReader.EXTRA_BOOK_ID, bookId)
+            args.putString(FolioReader.EXTRA_BOOK_ID2, bookId)
+            args.putString(FolioReader.EXTRA_LINK, link)
             args.putSerializable(BUNDLE_SPINE_ITEM, spineRef)
             fragment.arguments = args
             return fragment
@@ -113,6 +115,7 @@ class FolioPageFragment : Fragment(),
     private var spineIndex = -1
     private var mBookTitle: String? = null
     private var mIsPageReloaded: Boolean = false
+    private var mIsShowRemindPurchase: Boolean = false
     private var popupShowed: Boolean = false
 
     private var highlightStyle: String? = null
@@ -120,6 +123,7 @@ class FolioPageFragment : Fragment(),
     private var mediaController: MediaController? = null
     private var mConfig: Config? = null
     private var mBookId: String? = null
+    private var mLink: String? = null
     var searchLocatorVisible: SearchLocator? = null
 
     private lateinit var chapterUrl: Uri
@@ -149,6 +153,7 @@ class FolioPageFragment : Fragment(),
         mBookTitle = arguments!!.getString(BUNDLE_BOOK_TITLE)
         spineItem = arguments!!.getSerializable(BUNDLE_SPINE_ITEM) as Link
         mBookId = arguments!!.getString(FolioReader.EXTRA_BOOK_ID)
+        mLink = arguments!!.getString(FolioReader.EXTRA_LINK)
 
         chapterUrl = Uri.parse(mActivityCallback?.streamerUrl + spineItem.href!!.substring(1))
 
@@ -338,7 +343,8 @@ class FolioPageFragment : Fragment(),
         val isPageLoading = loadingView == null || loadingView!!.visibility == View.VISIBLE
         try {
             val pageIndex = mActivityCallback!!.currentChapterIndex
-            if (pageIndex > 3) {
+            if (pageIndex == 2 && !mIsShowRemindPurchase && mLink!!.length > 0) {
+              mIsShowRemindPurchase = true
               showRemindPurchase()
             }
         } catch (e: Exception) {
@@ -359,7 +365,7 @@ class FolioPageFragment : Fragment(),
                     .setPositiveButton("Mua ngay", DialogInterface.OnClickListener {
                         dialog, id ->
                         val openURL = Intent(android.content.Intent.ACTION_VIEW)
-                        openURL.data = Uri.parse("https://www.tutorialkart.com/")
+                        openURL.data = Uri.parse(mLink)
                         startActivity(openURL)
                         dialog.dismiss()
                     })
