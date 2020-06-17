@@ -29,11 +29,14 @@ import android.content.DialogInterface;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 
 public class ContentHighlightActivity extends AppCompatActivity {
     private boolean mIsNightMode;
     private Config mConfig;
     private Publication publication;
+    private RelativeLayout btnPurchase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +97,8 @@ public class ContentHighlightActivity extends AppCompatActivity {
             }
         });
 
+        btnPurchase = (RelativeLayout) findViewById(R.id.purchase_wrap);
+        btnPurchase.setVisibility(View.GONE);
 
         findViewById(R.id.btn_purchase).setOnClickListener(new View.OnClickListener() {
             @Override
