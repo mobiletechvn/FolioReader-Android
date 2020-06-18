@@ -1,74 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
-<vector
-    android:height="108dp"
-    android:width="108dp"
-    android:viewportHeight="108"
-    android:viewportWidth="108"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="#008577"
-          android:pathData="M0,0h108v108h-108z"/>
-    <path android:fillColor="#00000000" android:pathData="M9,0L9,108"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M19,0L19,108"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M29,0L29,108"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M39,0L39,108"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M49,0L49,108"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M59,0L59,108"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M69,0L69,108"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M79,0L79,108"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M89,0L89,108"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M99,0L99,108"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M0,9L108,9"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M0,19L108,19"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M0,29L108,29"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M0,39L108,39"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M0,49L108,49"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M0,59L108,59"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M0,69L108,69"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M0,79L108,79"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M0,89L108,89"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M0,99L108,99"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M19,29L89,29"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M19,39L89,39"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M19,49L89,49"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M19,59L89,59"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M19,69L89,69"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M19,79L89,79"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M29,19L29,89"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M39,19L39,89"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M49,19L49,89"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M59,19L59,89"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M69,19L69,89"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-    <path android:fillColor="#00000000" android:pathData="M79,19L79,89"
-          android:strokeColor="#33FFFFFF" android:strokeWidth="0.8"/>
-</vector>
+<!-- Generator: Adobe Illustrator 23.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+    viewBox="0 0 1000 1000" style="enable-background:new 0 0 1000 1000;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:url(#XMLID_10_);}
+	.st1{fill:url(#XMLID_11_);}
+	.st2{fill:url(#XMLID_12_);}
+	.st3{fill:url(#XMLID_13_);}
+	.st4{fill:none;stroke:url(#XMLID_14_);stroke-width:10;stroke-miterlimit:10;}
+	.st5{fill:none;stroke:url(#XMLID_15_);stroke-width:10;stroke-miterlimit:10;}
+	.st6{fill:url(#XMLID_16_);}
+	.st7{fill:url(#XMLID_18_);}
+	.st8{fill:url(#XMLID_19_);}
+	.st9{fill:#010101;}
+	.st10{fill:url(#XMLID_20_);}
+	.st11{fill:url(#XMLID_22_);}
+	.st12{fill:url(#XMLID_23_);}
+</style>
+    <g id="XMLID_1_">
+	<g id="XMLID_42_">
+		<linearGradient id="XMLID_10_" gradientUnits="userSpaceOnUse" x1="97.3871" y1="854.3154" x2="960.7405" y2="854.3154">
+			<stop  offset="0" style="stop-color:#052C48"/>
+            <stop  offset="0.2641" style="stop-color:#0B4F58"/>
+            <stop  offset="0.6197" style="stop-color:#187F6A"/>
+            <stop  offset="0.874" style="stop-color:#22A371"/>
+            <stop  offset="1" style="stop-color:#24B574"/>
+		</linearGradient>
+        <polygon id="XMLID_43_" class="st0" points="141,1000 125.6,980 354.5,803.5 578.1,950.4 860.4,708.6 877.4,726.8 580.1,981.9
+			355.7,834.5 		"/>
+	</g>
+        <linearGradient id="XMLID_11_" gradientUnits="userSpaceOnUse" x1="97.3871" y1="953.0617" x2="960.7405" y2="953.0617">
+		<stop  offset="0" style="stop-color:#052C48"/>
+            <stop  offset="0.2641" style="stop-color:#0B4F58"/>
+            <stop  offset="0.6197" style="stop-color:#187F6A"/>
+            <stop  offset="0.874" style="stop-color:#22A371"/>
+            <stop  offset="1" style="stop-color:#24B574"/>
+	</linearGradient>
+        <circle id="XMLID_41_" class="st1" cx="572.1" cy="953.1" r="36.9"/>
+        <linearGradient id="XMLID_12_" gradientUnits="userSpaceOnUse" x1="97.3871" y1="828.1783" x2="960.7405" y2="828.1783">
+		<stop  offset="0" style="stop-color:#052C48"/>
+            <stop  offset="0.2641" style="stop-color:#0B4F58"/>
+            <stop  offset="0.6197" style="stop-color:#187F6A"/>
+            <stop  offset="0.874" style="stop-color:#22A371"/>
+            <stop  offset="1" style="stop-color:#24B574"/>
+	</linearGradient>
+        <circle id="XMLID_40_" class="st2" cx="355.1" cy="828.2" r="36.9"/>
+        <linearGradient id="XMLID_13_" gradientUnits="userSpaceOnUse" x1="136.0424" y1="708.2311" x2="952.9075" y2="708.2311">
+		<stop  offset="0" style="stop-color:#052C48"/>
+            <stop  offset="0.2641" style="stop-color:#0B4F58"/>
+            <stop  offset="0.6197" style="stop-color:#187F6A"/>
+            <stop  offset="0.874" style="stop-color:#22A371"/>
+            <stop  offset="1" style="stop-color:#24B574"/>
+	</linearGradient>
+        <polygon id="XMLID_39_" class="st3" points="815.3,695.8 944.7,649 883.7,767.4 	"/>
+        <g id="XMLID_17_">
+		<g id="XMLID_37_">
+
+				<linearGradient id="XMLID_14_" gradientUnits="userSpaceOnUse" x1="5653.7656" y1="6491.7319" x2="5653.7656" y2="6491.7319" gradientTransform="matrix(-0.7071 0.7071 -0.7071 -0.7071 8664.0576 1076.184)">
+				<stop  offset="0" style="stop-color:#052C48"/>
+                    <stop  offset="0.2641" style="stop-color:#0B4F58"/>
+                    <stop  offset="0.6197" style="stop-color:#187F6A"/>
+                    <stop  offset="0.874" style="stop-color:#22A371"/>
+                    <stop  offset="1" style="stop-color:#24B574"/>
+			</linearGradient>
+            <path id="XMLID_38_" class="st4" d="M75.9,483.7"/>
+		</g>
+            <g id="XMLID_35_">
+
+				<linearGradient id="XMLID_15_" gradientUnits="userSpaceOnUse" x1="5053.9893" y1="5891.9551" x2="5053.9893" y2="5891.9551" gradientTransform="matrix(-0.7071 0.7071 -0.7071 -0.7071 8664.0576 1076.184)">
+				<stop  offset="0" style="stop-color:#052C48"/>
+                    <stop  offset="0.2641" style="stop-color:#0B4F58"/>
+                    <stop  offset="0.6197" style="stop-color:#187F6A"/>
+                    <stop  offset="0.874" style="stop-color:#22A371"/>
+                    <stop  offset="1" style="stop-color:#24B574"/>
+			</linearGradient>
+                <path id="XMLID_36_" class="st5" d="M924.1,483.7"/>
+		</g>
+            <g id="XMLID_3_">
+			<linearGradient id="XMLID_16_" gradientUnits="userSpaceOnUse" x1="305.5119" y1="439.1829" x2="-18.9942" y2="763.6889">
+				<stop  offset="0" style="stop-color:#052C48"/>
+                <stop  offset="0.2641" style="stop-color:#0B4F58"/>
+                <stop  offset="0.6197" style="stop-color:#187F6A"/>
+                <stop  offset="0.874" style="stop-color:#22A371"/>
+                <stop  offset="1" style="stop-color:#24B574"/>
+			</linearGradient>
+                <polygon id="XMLID_44_" class="st6" points="139.7,362.6 139.7,825.6 223.9,763.2 223.9,357.6 			"/>
+                <linearGradient id="XMLID_18_" gradientUnits="userSpaceOnUse" x1="883.195" y1="389.2516" x2="590.1236" y2="682.323">
+				<stop  offset="0" style="stop-color:#052C48"/>
+                    <stop  offset="0.2641" style="stop-color:#0B4F58"/>
+                    <stop  offset="0.6197" style="stop-color:#187F6A"/>
+                    <stop  offset="0.874" style="stop-color:#22A371"/>
+                    <stop  offset="1" style="stop-color:#24B574"/>
+			</linearGradient>
+                <polygon id="XMLID_45_" class="st7" points="767.3,357.6 767.3,647.2 851.6,568.4 851.6,357.6 			"/>
+		</g>
+            <g id="XMLID_25_">
+
+				<linearGradient id="XMLID_19_" gradientUnits="userSpaceOnUse" x1="5374.9272" y1="6170.7935" x2="5011.8833" y2="6533.8374" gradientTransform="matrix(-0.7071 0.7071 -0.7071 -0.7071 8664.0576 1076.184)">
+				<stop  offset="0" style="stop-color:#052C48"/>
+                    <stop  offset="0.2641" style="stop-color:#0B4F58"/>
+                    <stop  offset="0.6197" style="stop-color:#187F6A"/>
+                    <stop  offset="0.874" style="stop-color:#22A371"/>
+                    <stop  offset="1" style="stop-color:#24B574"/>
+			</linearGradient>
+                <polygon id="XMLID_28_" class="st8" points="894.3,513.4 500,119.1 105.7,513.4 46.1,453.9 500,0 953.9,453.9 			"/>
+		</g>
+	</g>
+        <g id="XMLID_2_">
+		<g id="A_2_">
+			<path id="XMLID_9_" class="st9" d="M669.7,431.6L669.7,431.6c-18.1-31.3-48.1-57.2-91-73.9c-85.7-33.4-156.3,7.1-156.3,7.1
+				l-29,36.4l7.8,19.5l27,21.9c0,0,8.9,5.9,29.8,4.5c0.9-0.1-9.8-9.6-9.1-10c86.6-43.1,138.7,11.6,154.7,32.7
+				c1.4,2.8,3.2,5.3,5.2,7.6l0,0l0,0c9.3,10.5,24,15.4,38.5,11.5c20.4-5.5,32.4-26.4,26.9-46.8C673.2,438.3,671.7,434.8,669.7,431.6
+				z"/>
+            <path id="XMLID_8_" class="st9" d="M347.1,643.1L347.1,643.1c18.1,31.3,48.1,57.3,91,73.9c85.7,33.4,156.3-7.1,156.3-7.1l29-36.4
+				l-7.7-19.5l-27-21.9c0,0-8.9-5.9-29.8-4.5c-0.8,0.1,9.8,9.6,9.1,10c-86.6,43.1-138.7-11.6-154.7-32.7c-1.5-2.8-3.2-5.3-5.2-7.6
+				l0,0l0,0c-9.3-10.5-24-15.4-38.5-11.5c-20.4,5.5-32.4,26.4-26.9,46.8C343.6,636.5,345.2,640,347.1,643.1z"/>
+            <path id="XMLID_7_" class="st9" d="M638.9,546.2L638.9,546.2L638.9,546.2L638.9,546.2L638.9,546.2c-1.2-0.7-44.1-25.4-93.1-53.6
+				V310.9c0-4.3-3.5-7.8-7.8-7.8h-7.1c-4.3,0-7.8,3.5-7.8,7.8v168.7c-8.2-4.7-16.5-9.5-24.6-14.1V310.9c0-4.3-3.5-7.8-7.8-7.8h-7.1
+				c-4.3,0-7.8,3.5-7.8,7.8v141.5c-15-8.7-29-16.7-40.7-23.4l0-0.1c-47.8-27.5-12.9-64.2-12.9-64.2c-44.4,21.3-69.3,57.2-78.5,72
+				c-30.9,49.7,11.1,78.5,34.1,91.8l0,0.1c26.5,15.2,63.1,36.3,98.1,56.4v166.1c0,4.3,3.5,7.8,7.8,7.8h7.1c4.3,0,7.8-3.5,7.8-7.8
+				V598.1c8.5,4.9,16.8,9.7,24.6,14.1v139c0,4.3,3.5,7.8,7.8,7.8h7.1c4.3,0,7.8-3.5,7.8-7.8v-126c21.1,12.1,35.1,20.2,35.7,20.6
+				c47.7,27.5,12.9,64.2,12.9,64.2c44.4-21.3,69.3-57.2,78.5-72C703.9,588.3,661.9,559.5,638.9,546.2z"/>
+		</g>
+            <g id="A_1_">
+			<linearGradient id="XMLID_20_" gradientUnits="userSpaceOnUse" x1="405.709" y1="358.3708" x2="691.5225" y2="465.5505">
+				<stop  offset="0" style="stop-color:#FFD969"/>
+                <stop  offset="0.5715" style="stop-color:#FFD65E"/>
+                <stop  offset="0.5945" style="stop-color:#EDC350"/>
+                <stop  offset="0.6367" style="stop-color:#D8AA3F"/>
+                <stop  offset="0.6815" style="stop-color:#CA9B35"/>
+                <stop  offset="0.7302" style="stop-color:#C29230"/>
+                <stop  offset="0.7898" style="stop-color:#C08F2F"/>
+                <stop  offset="0.867" style="stop-color:#BD8C2F"/>
+                <stop  offset="0.9171" style="stop-color:#B4832D"/>
+                <stop  offset="0.9595" style="stop-color:#A5742A"/>
+                <stop  offset="0.9975" style="stop-color:#926126"/>
+                <stop  offset="1" style="stop-color:#905F25"/>
+			</linearGradient>
+                <path id="XMLID_6_" class="st10" d="M661.3,423.2L661.3,423.2c-18.1-31.3-48.1-57.2-91-73.9c-85.7-33.4-156.3,7.1-156.3,7.1
+				l-29,36.4l7.8,19.5l27,21.9c0,0,8.9,5.9,29.8,4.5c0.9-0.1-9.8-9.6-9.1-10c86.6-43.1,138.7,11.6,154.7,32.7
+				c1.4,2.8,3.2,5.3,5.2,7.6l0,0l0,0c9.3,10.5,24,15.4,38.5,11.5c20.4-5.5,32.4-26.4,26.9-46.8C664.8,429.8,663.3,426.4,661.3,423.2
+				z"/>
+                <linearGradient id="XMLID_22_" gradientUnits="userSpaceOnUse" x1="601.8332" y1="677.5244" x2="316.3725" y2="630.4704">
+				<stop  offset="4.540019e-02" style="stop-color:#905F25"/>
+                    <stop  offset="4.712684e-02" style="stop-color:#926126"/>
+                    <stop  offset="7.301154e-02" style="stop-color:#A5742A"/>
+                    <stop  offset="0.1019" style="stop-color:#B4832D"/>
+                    <stop  offset="0.136" style="stop-color:#BD8C2F"/>
+                    <stop  offset="0.1886" style="stop-color:#C08F2F"/>
+                    <stop  offset="0.2341" style="stop-color:#C29230"/>
+                    <stop  offset="0.2713" style="stop-color:#CA9B35"/>
+                    <stop  offset="0.3055" style="stop-color:#D8AA3F"/>
+                    <stop  offset="0.3378" style="stop-color:#EDC350"/>
+                    <stop  offset="0.3553" style="stop-color:#FFD65E"/>
+                    <stop  offset="1" style="stop-color:#FFD969"/>
+			</linearGradient>
+                <path id="XMLID_5_" class="st11" d="M338.7,634.7L338.7,634.7c18.1,31.3,48.1,57.3,91,73.9c85.7,33.4,156.3-7.1,156.3-7.1
+				l29-36.4l-7.8-19.5l-27-21.9c0,0-8.9-5.9-29.8-4.5c-0.8,0.1,9.8,9.6,9.1,10c-86.6,43.1-138.7-11.6-154.7-32.7
+				c-1.5-2.8-3.2-5.3-5.2-7.6l0,0l0,0c-9.3-10.5-24-15.4-38.5-11.5c-20.4,5.5-32.4,26.4-26.9,46.8
+				C335.2,628.1,336.7,631.6,338.7,634.7z"/>
+                <linearGradient id="XMLID_23_" gradientUnits="userSpaceOnUse" x1="411.711" y1="473.9644" x2="695.8459" y2="626.3641">
+				<stop  offset="0" style="stop-color:#906D2A"/>
+                    <stop  offset="3.751796e-02" style="stop-color:#9F782C"/>
+                    <stop  offset="9.792927e-02" style="stop-color:#B1852E"/>
+                    <stop  offset="0.1695" style="stop-color:#BC8D2F"/>
+                    <stop  offset="0.2796" style="stop-color:#C08F2F"/>
+                    <stop  offset="0.3537" style="stop-color:#C29230"/>
+                    <stop  offset="0.4143" style="stop-color:#CA9B35"/>
+                    <stop  offset="0.47" style="stop-color:#D8AA3F"/>
+                    <stop  offset="0.5225" style="stop-color:#EDC350"/>
+                    <stop  offset="0.551" style="stop-color:#FFD65E"/>
+                    <stop  offset="0.5839" style="stop-color:#FFDB70"/>
+                    <stop  offset="0.6438" style="stop-color:#FFE287"/>
+                    <stop  offset="0.7092" style="stop-color:#FFE898"/>
+                    <stop  offset="0.782" style="stop-color:#FFECA5"/>
+                    <stop  offset="0.8679" style="stop-color:#FFEEAC"/>
+                    <stop  offset="1" style="stop-color:#FFEFAF"/>
+			</linearGradient>
+                <path id="XMLID_21_" class="st12" d="M630.5,537.8L630.5,537.8L630.5,537.8L630.5,537.8L630.5,537.8
+				c-1.2-0.7-44.1-25.4-93.1-53.6V302.5c0-4.3-3.5-7.8-7.8-7.8h-7.1c-4.3,0-7.8,3.5-7.8,7.8v168.7c-8.2-4.7-16.5-9.5-24.6-14.1
+				V302.5c0-4.3-3.5-7.8-7.8-7.8h-7.1c-4.3,0-7.8,3.5-7.8,7.8v141.5c-15-8.7-29-16.7-40.7-23.4l0-0.1
+				c-47.8-27.5-12.9-64.2-12.9-64.2c-44.4,21.3-69.3,57.2-78.5,72c-30.9,49.7,11.1,78.5,34.1,91.8l0,0.1
+				c26.5,15.2,63.1,36.3,98.1,56.4v166.1c0,4.3,3.5,7.8,7.8,7.8h7.1c4.3,0,7.8-3.5,7.8-7.8V589.7c8.5,4.9,16.8,9.7,24.6,14.1v139
+				c0,4.3,3.5,7.8,7.8,7.8h7.1c4.3,0,7.8-3.5,7.8-7.8v-126c21.1,12.1,35.1,20.2,35.7,20.6c47.7,27.5,12.9,64.2,12.9,64.2
+				c44.4-21.3,69.3-57.2,78.5-72C695.5,579.9,653.5,551,630.5,537.8z"/>
+		</g>
+	</g>
+</g>
+</svg>

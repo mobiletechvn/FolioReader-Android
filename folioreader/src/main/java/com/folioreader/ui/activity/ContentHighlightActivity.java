@@ -97,9 +97,12 @@ public class ContentHighlightActivity extends AppCompatActivity {
             }
         });
 
-        btnPurchase = (RelativeLayout) findViewById(R.id.purchase_wrap);
-        btnPurchase.setVisibility(View.GONE);
+        String url = getIntent().getStringExtra(FolioReader.EXTRA_LINK);
 
+        if (url.length() == 0) {
+            btnPurchase = (RelativeLayout) findViewById(R.id.purchase_wrap);
+            btnPurchase.setVisibility(View.GONE);
+        }
         findViewById(R.id.btn_purchase).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
