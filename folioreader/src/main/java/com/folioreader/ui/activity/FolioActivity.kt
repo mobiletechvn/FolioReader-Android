@@ -74,6 +74,7 @@ import org.readium.r2.streamer.parser.PubBox
 import org.readium.r2.streamer.server.Server
 import java.lang.ref.WeakReference
 import android.widget.ImageView
+import android.graphics.Color;
 
 class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControllerCallback,
     View.OnSystemUiVisibilityChangeListener {
@@ -317,7 +318,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         val config = AppUtil.getSavedConfig(applicationContext)!!
 
         val drawable = ContextCompat.getDrawable(this, R.drawable.ic_drawer)
-        UiUtil.setColorIntToDrawable(0x7f050090, drawable!!)
+        UiUtil.setColorIntToDrawable(Color.GRAY, drawable!!)
         toolbar!!.navigationIcon = drawable
         if (getSupportActionBar() != null){
                 // getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true);
@@ -392,9 +393,9 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         menuInflater.inflate(R.menu.menu_main, menu)
 
         val config = AppUtil.getSavedConfig(applicationContext)!!
-        UiUtil.setColorIntToDrawable(0x7f050090, menu.findItem(R.id.itemSearch).icon)
-        UiUtil.setColorIntToDrawable(0x7f050090, menu.findItem(R.id.itemConfig).icon)
-        UiUtil.setColorIntToDrawable(0x7f050090, menu.findItem(R.id.itemTts).icon)
+        UiUtil.setColorIntToDrawable(Color.GRAY, menu.findItem(R.id.itemSearch).icon)
+        UiUtil.setColorIntToDrawable(Color.GRAY, menu.findItem(R.id.itemConfig).icon)
+        UiUtil.setColorIntToDrawable(Color.GRAY, menu.findItem(R.id.itemTts).icon)
 
         if (!config.isShowTts)
             menu.findItem(R.id.itemTts).isVisible = false

@@ -64,7 +64,7 @@ public class ContentHighlightActivity extends AppCompatActivity {
         findViewById(R.id.layout_content_highlights).setBackgroundDrawable(UiUtil.getShapeDrawable(mConfig.getThemeColor()));
 
         if (mIsNightMode) {
-            findViewById(R.id.toolbar).setBackgroundColor(Color.BLACK);
+            findViewById(R.id.itemSearch).setBackgroundColor(Color.BLACK);
             findViewById(R.id.btn_contents).setBackgroundDrawable(UiUtil.createStateDrawable(mConfig.getThemeColor(), ContextCompat.getColor(this, R.color.black)));
             findViewById(R.id.btn_highlights).setBackgroundDrawable(UiUtil.createStateDrawable(mConfig.getThemeColor(), ContextCompat.getColor(this, R.color.black)));
             ((TextView) findViewById(R.id.btn_contents)).setTextColor(UiUtil.getColorList(ContextCompat.getColor(this, R.color.black), mConfig.getThemeColor()));
