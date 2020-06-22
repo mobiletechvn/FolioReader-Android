@@ -207,7 +207,7 @@ html.nightMode {
     background-color: #131313 !important;
 }
 
-.nightMode p, .nightMode div {
+.nightMode p, .nightMode div, .nightMode a {
     color: #f2f2f2 !important;
     background-color: transparent !important;
 }
