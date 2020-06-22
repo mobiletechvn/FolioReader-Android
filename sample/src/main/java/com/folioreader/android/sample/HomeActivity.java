@@ -85,7 +85,7 @@ public class HomeActivity extends AppCompatActivity
 
                 folioReader.setReadLocator(readLocator);
                 folioReader.setConfig(config, true)
-                        .openBook("file:///android_asset/TheSilverChair.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
+                        .openBook("file:///android_asset/Sachvui.Com-kinh-dich-ung-dung-trong-kinh-doanh-thieu-vu.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
                                     }
         });
     }
