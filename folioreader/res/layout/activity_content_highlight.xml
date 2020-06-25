@@ -83,7 +83,9 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/purchase_wrap"
+        >
                  <Button
                     android:id="@+id/btn_purchase"
                     android:layout_alignParentBottom="true" 

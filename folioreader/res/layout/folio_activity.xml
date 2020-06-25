@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context="com.folioreader.ui.activity.FolioActivity"
     tools:menu="@menu/menu_main">
-        <com.folioreader.ui.view.DirectionalViewpager
+    <com.folioreader.ui.view.DirectionalViewpager
         android:id="@+id/folioPageViewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -36,9 +36,9 @@
                     android:id="@+id/btn_home"
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
-                    app:srcCompat="@drawable/ic_24hmoney" 
-                    android:layout_width="155dp"
-                    android:layout_height="36dp"
+                    app:srcCompat="@drawable/ic_back_grey" 
+                    android:layout_width="12dp"
+                    android:layout_height="19dp"
                     android:scaleType="fitXY"
                 />
         </androidx.appcompat.widget.Toolbar>

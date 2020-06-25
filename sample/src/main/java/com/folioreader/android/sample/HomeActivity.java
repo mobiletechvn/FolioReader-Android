@@ -53,6 +53,8 @@ public class HomeActivity extends AppCompatActivity
         folioReader = FolioReader.get()
                 .setOnHighlightListener(this)
                 .setReadLocatorListener(this)
+                .setLinkPurchase("")
+                .setStatusTooltip("")
                 .setOnClosedListener(this);
 
         getHighlightsAndSave();
@@ -67,7 +69,7 @@ public class HomeActivity extends AppCompatActivity
                 config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL);
 
                 folioReader.setConfig(config, true)
-                        .openBook(R.raw.accessible_epub_3);
+                        .openBook(R.raw.accessible_epub_3, "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
             }
         });
 
@@ -80,12 +82,12 @@ public class HomeActivity extends AppCompatActivity
                 Config config = AppUtil.getSavedConfig(getApplicationContext());
                 if (config == null)
                     config = new Config();
-                config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL);
+                config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL).setFontSize(3).setDirection(Config.Direction.HORIZONTAL);
 
                 folioReader.setReadLocator(readLocator);
                 folioReader.setConfig(config, true)
-                        .openBook("file:///android_asset/TheSilverChair.epub");
-            }
+                        .openBook("file:///android_asset/Sachvui.Com-xay-dung-de-truong-ton-jim-collins-jerry-i-porras.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
+                                    }
         });
     }
 
