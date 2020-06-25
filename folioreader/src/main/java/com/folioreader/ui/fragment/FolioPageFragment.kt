@@ -563,13 +563,13 @@ class FolioPageFragment : Fragment(),
 
             } else if (isCurrentFragment) {
 
-                if (mActivityCallback!!.tooltipStep.count() < 2 && mStatusTooltip!!.count() > 0) {
+                if (mActivityCallback!!.getTooltipStep().count() < 2 && mStatusTooltip!!.count() > 0) {
                   showGuidePopup()
-                  mActivityCallback!!.tooltipStep()
+                  mActivityCallback!!.setTooltipStep()
                 }
         
-                val a = mActivityCallback!!.getTooltipStatus()
-                mActivityCallback!!.setTooltipStatus()
+                // val a = mActivityCallback!!.getTooltipStatus()
+                // mActivityCallback!!.setTooltipStatus()
 
                 val readLocator: ReadLocator?
                 if (savedInstanceState == null) {
