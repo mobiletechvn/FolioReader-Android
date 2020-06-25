@@ -417,6 +417,8 @@ class FolioPageFragment : Fragment(),
             mAlertDialog.dismiss()
             showGuidePopup2()
         }
+        mAlertDialog.setOnCancelListener {  func ->  showGuidePopup2()}
+
         // mAlertDialog.getWindow().setGravity(Gravity.TOP)
         mAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
