@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context="com.folioreader.ui.activity.FolioActivity"
     tools:menu="@menu/menu_main">
-        <com.folioreader.ui.view.DirectionalViewpager
+    <com.folioreader.ui.view.DirectionalViewpager
         android:id="@+id/folioPageViewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"

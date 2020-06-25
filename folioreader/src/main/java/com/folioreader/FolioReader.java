@@ -39,6 +39,7 @@ public class FolioReader {
     public static final String EXTRA_BOOK_ID = "com.folioreader.extra.BOOK_ID";
     public static final String EXTRA_BOOK_ID2 = "com.folioreader.extra.BOOK_ID2";
     public static final String EXTRA_LINK = "com.folioreader.extra.LINK";
+    public static final String EXTRA_STATUS_TOOLTIP = "com.folioreader.extra.STATUS_TOOLTIP";
     public static final String EXTRA_READ_LOCATOR = "com.folioreader.extra.READ_LOCATOR";
     public static final String EXTRA_PORT_NUMBER = "com.folioreader.extra.PORT_NUMBER";
     public static final String EXTRA_PORT_NUMBER2 = "com.folioreader.extra.PORT_NUMBER2";
@@ -55,6 +56,7 @@ public class FolioReader {
     private OnClosedListener onClosedListener;
     private ReadLocator readLocator;
     private String link;
+    private String statusTooltip;
 
     @Nullable
     public Retrofit retrofit;
@@ -171,6 +173,7 @@ public class FolioReader {
         intent.putExtra(EXTRA_PORT_NUMBER, portNumber);
         intent.putExtra(FolioActivity.EXTRA_READ_LOCATOR, (Parcelable) readLocator);
         intent.putExtra(EXTRA_LINK, this.link);
+        intent.putExtra(EXTRA_STATUS_TOOLTIP, this.statusTooltip);
 
         if (rawId != 0) {
             intent.putExtra(FolioActivity.INTENT_EPUB_SOURCE_PATH, rawId);
@@ -252,6 +255,11 @@ public class FolioReader {
 
     public FolioReader setLinkPurchase(String linkPurchase) {
         this.link = linkPurchase;
+        return singleton;
+    }
+
+    public FolioReader setStatusTooltip(String statusTooltip) {
+        this.statusTooltip = statusTooltip;
         return singleton;
     }
 

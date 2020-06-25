@@ -54,6 +54,7 @@ public class HomeActivity extends AppCompatActivity
                 .setOnHighlightListener(this)
                 .setReadLocatorListener(this)
                 .setLinkPurchase("")
+                .setStatusTooltip("")
                 .setOnClosedListener(this);
 
         getHighlightsAndSave();

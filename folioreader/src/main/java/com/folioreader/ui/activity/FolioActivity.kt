@@ -90,6 +90,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     private var handler: Handler? = null
 
     private var currentChapterIndex: Int = 0
+    private var tooltipStep: Int = 5
     private var mFolioPageFragmentAdapter: FolioPageFragmentAdapter? = null
     private var entryReadLocator: ReadLocator? = null
     private var lastReadLocator: ReadLocator? = null
@@ -102,6 +103,8 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
     private var mBookId: String? = null
     private var mLink: String? = null
+    private var mStatusTooltip: String? = null
+    private var statusTooltip: String? = ""
     private var mEpubFilePath: String? = null
     private var mEpubSourceType: EpubSourceType? = null
     private var mEpubRawId = 0
@@ -276,6 +279,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
         mBookId = intent.getStringExtra(FolioReader.EXTRA_BOOK_ID)
         mLink = intent.getStringExtra(FolioReader.EXTRA_LINK)
+        mStatusTooltip = intent.getStringExtra(FolioReader.EXTRA_STATUS_TOOLTIP)
 
         mEpubSourceType = intent.extras!!.getSerializable(FolioActivity.INTENT_EPUB_SOURCE_TYPE) as EpubSourceType
         if (mEpubSourceType == EpubSourceType.RAW) {
@@ -575,6 +579,15 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         return streamerUri.toString()
     }
 
+    override fun getTooltipStatus(): String {
+        return statusTooltip.toString()
+    }
+
+    override fun setTooltipStatus() {
+        statusTooltip = "done"
+    }
+
+
     override fun onDirectionChange(newDirection: Config.Direction) {
         Log.v(LOG_TAG, "-> onDirectionChange")
 
@@ -587,7 +600,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         mFolioPageViewPager!!.setDirection(newDirection)
         mFolioPageFragmentAdapter = FolioPageFragmentAdapter(
             supportFragmentManager,
-            spine, bookFileName, mBookId, mLink
+            spine, bookFileName, mBookId, mLink, mStatusTooltip
         )
         mFolioPageViewPager!!.adapter = mFolioPageFragmentAdapter
         mFolioPageViewPager!!.currentItem = currentChapterIndex
@@ -762,7 +775,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         }
     }
 
-    private fun hideSystemUI() {
+    override fun hideSystemUI() {
         Log.v(LOG_TAG, "-> hideSystemUI")
 
         if (Build.VERSION.SDK_INT >= 16) {
@@ -883,6 +896,14 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         return currentChapterIndex
     }
 
+      override fun getTooltipStep(): String {
+        return tooltipStep.toString()
+    }
+
+    override fun setTooltipStep() {
+        tooltipStep = 10
+    }
+
     private fun configFolio() {
 
         mFolioPageViewPager = findViewById(R.id.folioPageViewPager)
@@ -931,7 +952,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         mFolioPageViewPager!!.setDirection(direction)
         mFolioPageFragmentAdapter = FolioPageFragmentAdapter(
             supportFragmentManager,
-            spine, bookFileName, mBookId, mLink
+            spine, bookFileName, mBookId, mLink, mStatusTooltip
         )
         mFolioPageViewPager!!.adapter = mFolioPageFragmentAdapter
 
