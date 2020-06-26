@@ -207,13 +207,14 @@ html.nightMode {
     background-color: #131313 !important;
 }
 
-.nightMode p, .nightMode div, .nightMode a {
+.nightMode p, .nightMode div, .nightMode a, .nightMode span  {
     color: #f2f2f2 !important;
     background-color: transparent !important;
 }
 
 .nightMode h1, .nightMode h2, .nightMode h3, .nightMode h4, .nightMode h5, .nightMode h6 {
-    color: #848484 !important;
+    color: #f2f2f2 !important;
+
 }
 
 html.nightMode .highlight_yellow {background:rgba(255, 235, 107, 0.9)}

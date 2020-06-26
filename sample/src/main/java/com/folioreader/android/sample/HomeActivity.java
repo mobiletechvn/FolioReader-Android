@@ -53,8 +53,8 @@ public class HomeActivity extends AppCompatActivity
         folioReader = FolioReader.get()
                 .setOnHighlightListener(this)
                 .setReadLocatorListener(this)
-                .setLinkPurchase("")
-                .setStatusTooltip("show")
+                .setLinkPurchase("test")
+                .setStatusTooltip("")
                 .setOnClosedListener(this);
 
         getHighlightsAndSave();
@@ -86,7 +86,8 @@ public class HomeActivity extends AppCompatActivity
 
                 folioReader.setReadLocator(readLocator);
                 folioReader.setConfig(config, true)
-                        .openBook("file:///android_asset/Sachvui.Com-xay-dung-de-truong-ton-jim-collins-jerry-i-porras.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
+                        .openBook("file:///android_asset/test.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
+                        // .openBook("file:///android_asset/thay-doi-1-cach-lanh-dao-09031593159744.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
                                     }
         });
     }

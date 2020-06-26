@@ -361,15 +361,15 @@ class FolioPageFragment : Fragment(),
 
     fun scrollToLast() {
         val isPageLoading = loadingView == null || loadingView!!.visibility == View.VISIBLE
-        try {
-            val pageIndex = mActivityCallback!!.currentChapterIndex
-            if (pageIndex == 2 && !mIsShowRemindPurchase && mLink!!.length > 0) {
-              mIsShowRemindPurchase = true
-              showRemindPurchase()
-            }
-        } catch (e: Exception) {
-            Log.e(LOG_TAG, "shouldInterceptRequest failed", e)
-        }
+        // try {
+        //     val pageIndex = mActivityCallback!!.currentChapterIndex
+        //     if (pageIndex == 2 && !mIsShowRemindPurchase && mLink!!.length > 0) {
+        //       mIsShowRemindPurchase = true
+        //       // showRemindPurchase()
+        //     }
+        // } catch (e: Exception) {
+        //     Log.e(LOG_TAG, "shouldInterceptRequest failed", e)
+        // }
         
         if (!isPageLoading) {
             loadingView!!.show()
@@ -392,9 +392,12 @@ class FolioPageFragment : Fragment(),
                     .setNegativeButton("Để sau", DialogInterface.OnClickListener {
                         dialog, id ->
                         dialog.dismiss()
+                        mActivityCallback!!.hideSystemUI()
 
                     })
             val alert = dialogBuilder.create()
+            alert.setOnCancelListener {  func ->  mActivityCallback!!.hideSystemUI()}
+
             alert.setTitle("")
             alert.show()
     }
@@ -445,7 +448,6 @@ class FolioPageFragment : Fragment(),
     }
 
     fun scrollToFirst() {
-
         val isPageLoading = loadingView == null || loadingView!!.visibility == View.VISIBLE
         Log.v(LOG_TAG, "-> scrollToFirst -> isPageLoading = $isPageLoading")
 
@@ -498,6 +500,7 @@ class FolioPageFragment : Fragment(),
 
         mWebview!!.settings.defaultTextEncodingName = "utf-8"
         HtmlTask(this).execute(chapterUrl.toString())
+        mActivityCallback!!.hideSystemUI()
     }
 
     private val webViewClient = object : WebViewClient() {
@@ -799,7 +802,6 @@ class FolioPageFragment : Fragment(),
                Log.v(LOG_TAG, "-> pagesRemaining -> ${pagesRemaining}")
                this.popupShowed = true
                popupShowed = true
-               // showRemindPurchase()
             } 
             
 

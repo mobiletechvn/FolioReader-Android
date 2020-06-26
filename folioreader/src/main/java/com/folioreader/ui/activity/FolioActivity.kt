@@ -415,10 +415,11 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         if (itemId == android.R.id.home) {
             Log.v(LOG_TAG, "-> onOptionsItemSelected -> drawer")
             startContentHighlightActivity()
+            hideSystemUI()
             return true
 
         } else if (itemId == R.id.itemSearch) {
-            Log.v(LOG_TAG, "-> onOptionsItemSelected -> " + item.title)
+            Log.v(LOG_TAG, "-> onOptionsItemSelected search -> " + item.title)
             if (searchUri == null)
                 return true
             val intent = Intent(this, SearchActivity::class.java)
@@ -430,12 +431,12 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             return true
 
         } else if (itemId == R.id.itemConfig) {
-            Log.v(LOG_TAG, "-> onOptionsItemSelected -> " + item.title)
+            Log.v(LOG_TAG, "-> onOptionsItemSelected config -> " + item.title)
             showConfigBottomSheetDialogFragment()
             return true
 
         } else if (itemId == R.id.itemTts) {
-            Log.v(LOG_TAG, "-> onOptionsItemSelected -> " + item.title)
+            Log.v(LOG_TAG, "-> onOptionsItemSelected tts -> " + item.title)
             showMediaController()
             return true
         }
@@ -618,7 +619,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
         // Deliberately Hidden and shown to make activity contents lay out behind SystemUI
         hideSystemUI()
-        showSystemUI()
+        // showSystemUI()
 
         distractionFreeMode = savedInstanceState != null && savedInstanceState.getBoolean(BUNDLE_DISTRACTION_FREE_MODE)
     }
@@ -777,7 +778,9 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
     override fun hideSystemUI() {
         Log.v(LOG_TAG, "-> hideSystemUI")
-
+        if (distractionFreeMode) {
+            return
+        }
         if (Build.VERSION.SDK_INT >= 16) {
             val decorView = window.decorView
             decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
