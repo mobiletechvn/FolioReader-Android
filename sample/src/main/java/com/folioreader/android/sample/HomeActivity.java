@@ -87,6 +87,7 @@ public class HomeActivity extends AppCompatActivity
                 folioReader.setReadLocator(readLocator);
                 folioReader.setConfig(config, true)
                         .openBook("file:///android_asset/test.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
+                        // .openBook("file:///android_asset/aaa.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
                         // .openBook("file:///android_asset/thay-doi-1-cach-lanh-dao-09031593159744.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
                                     }
         });

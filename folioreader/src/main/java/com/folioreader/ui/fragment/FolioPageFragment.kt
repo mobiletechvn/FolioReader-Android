@@ -796,10 +796,9 @@ class FolioPageFragment : Fragment(),
                 pagesRemainingStrFormat, pagesRemaining
             )
 
-               Log.v(LOG_TAG, "-> chap -> ${this.popupShowed}")
+               Log.v(LOG_TAG, "-> pagesRemaining count -> ${totalPages}")
 
             if (mActivityCallback!!.currentChapterIndex > 0 && pagesRemaining == 1) {
-               Log.v(LOG_TAG, "-> pagesRemaining -> ${pagesRemaining}")
                this.popupShowed = true
                popupShowed = true
             } 
