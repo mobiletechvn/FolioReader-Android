@@ -363,7 +363,7 @@ class FolioPageFragment : Fragment(),
         val isPageLoading = loadingView == null || loadingView!!.visibility == View.VISIBLE
         try {
             val pageIndex = mActivityCallback!!.currentChapterIndex
-            if (pageIndex == 2 && !mIsShowRemindPurchase && mLink!!.length > 0) {
+            if (pageIndex == 3 && !mIsShowRemindPurchase && mLink!!.length > 0) {
               mIsShowRemindPurchase = true
               showRemindPurchase()
             }
