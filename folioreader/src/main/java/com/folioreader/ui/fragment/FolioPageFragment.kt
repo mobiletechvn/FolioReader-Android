@@ -699,8 +699,7 @@ class FolioPageFragment : Fragment(),
         mediaController!!.stop()
         //TODO save last media overlay item
 
-        if (isCurrentFragment)
-            getLastReadLocator()
+       
     }
 
     fun getLastReadLocator(): ReadLocator? {
@@ -963,7 +962,9 @@ class FolioPageFragment : Fragment(),
 
     override fun onDestroy() {
         super.onDestroy()
-
+         if (isCurrentFragment)
+            getLastReadLocator()
+            
         if (isCurrentFragment) {
             if (outState != null)
                 outState!!.putSerializable(BUNDLE_READ_LOCATOR_CONFIG_CHANGE, lastReadLocator)
