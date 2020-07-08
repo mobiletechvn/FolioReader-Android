@@ -270,7 +270,7 @@ class FolioPageFragment : Fragment(),
     fun reload(reloadDataEvent: ReloadDataEvent) {
 
         if (isCurrentFragment)
-            getLastReadLocator()
+            load()
 
         if (isAdded) {
             mWebview!!.dismissPopupWindow()
@@ -702,6 +702,19 @@ class FolioPageFragment : Fragment(),
        
     }
 
+    fun load() {
+        Log.v(LOG_TAG, "-> getLastReadLocator2 -> " + spineItem.href!!)
+        try {
+            synchronized(this) {
+                mWebview!!.loadUrl(getString(R.string.callComputeLastReadCfi2))
+                (this as java.lang.Object).wait(5000)
+            }
+        } catch (e: InterruptedException) {
+            Log.e(LOG_TAG, "-> ", e)
+        }
+
+    }
+
     fun getLastReadLocator(): ReadLocator? {
         Log.v(LOG_TAG, "-> getLastReadLocator -> " + spineItem.href!!)
         try {
@@ -717,7 +730,7 @@ class FolioPageFragment : Fragment(),
     }
 
     @JavascriptInterface
-    fun storeLastReadCfi(cfi: String) {
+    fun storeLastReadCfi(cfi: String, noCallback: Boolean) {
 
         synchronized(this) {
             var href = spineItem.href
@@ -727,9 +740,11 @@ class FolioPageFragment : Fragment(),
             locations.cfi = cfi
             lastReadLocator = ReadLocator(mBookId!!, href, created, locations)
 
-            val intent = Intent(FolioReader.ACTION_SAVE_READ_LOCATOR)
-            intent.putExtra(FolioReader.EXTRA_READ_LOCATOR, lastReadLocator as Parcelable?)
-            LocalBroadcastManager.getInstance(context!!).sendBroadcast(intent)
+            if (!noCallback) {
+                val intent = Intent(FolioReader.ACTION_SAVE_READ_LOCATOR)
+                intent.putExtra(FolioReader.EXTRA_READ_LOCATOR, lastReadLocator as Parcelable?)
+                LocalBroadcastManager.getInstance(context!!).sendBroadcast(intent)
+            }
 
             (this as java.lang.Object).notify()
         }

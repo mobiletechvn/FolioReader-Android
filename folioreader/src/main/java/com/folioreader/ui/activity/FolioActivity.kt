@@ -593,8 +593,8 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         Log.v(LOG_TAG, "-> onDirectionChange")
 
         var folioPageFragment: FolioPageFragment? = currentFragment ?: return
-        entryReadLocator = folioPageFragment!!.getLastReadLocator()
-        val searchLocatorVisible = folioPageFragment.searchLocatorVisible
+        // entryReadLocator = folioPageFragment!!.getLastReadLocator()
+        val searchLocatorVisible = folioPageFragment!!.searchLocatorVisible
 
         direction = newDirection
 
