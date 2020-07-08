@@ -95,7 +95,6 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private ReadLocator getLastReadLocator() {
-
         String jsonString = loadAssetTextAsString("Locators/LastReadLocators/last_read_locator_1.json");
         return ReadLocator.fromJson(jsonString);
     }
