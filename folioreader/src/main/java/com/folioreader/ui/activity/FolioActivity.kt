@@ -231,6 +231,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     override fun onResume() {
         super.onResume()
         Log.v(LOG_TAG, "-> onResume")
+        hideSystemUI()
         topActivity = true
 
         val action = intent.action
@@ -415,7 +416,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         if (itemId == android.R.id.home) {
             Log.v(LOG_TAG, "-> onOptionsItemSelected -> drawer")
             startContentHighlightActivity()
-            hideSystemUI()
+            // hideSystemUI()
             return true
 
         } else if (itemId == R.id.itemSearch) {
@@ -613,7 +614,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     }
 
     private fun initDistractionFreeMode(savedInstanceState: Bundle?) {
-        Log.v(LOG_TAG, "-> initDistractionFreeMode")
+        // Log.v(LOG_TAG, "-> initDistractionFreeMode")
 
         window.decorView.setOnSystemUiVisibilityChangeListener(this)
 
@@ -626,7 +627,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        Log.v(LOG_TAG, "-> onPostCreate")
+        // Log.v(LOG_TAG, "-> onPostCreate")
 
         if (distractionFreeMode) {
             handler!!.post { hideSystemUI() }
@@ -737,10 +738,10 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     }
 
     override fun onSystemUiVisibilityChange(visibility: Int) {
-        Log.v(LOG_TAG, "-> onSystemUiVisibilityChange -> visibility = $visibility")
+        // Log.v(LOG_TAG, "-> onSystemUiVisibilityChange -> visibility = $visibility")
 
         distractionFreeMode = visibility != View.SYSTEM_UI_FLAG_VISIBLE
-        Log.v(LOG_TAG, "-> distractionFreeMode = $distractionFreeMode")
+        // Log.v(LOG_TAG, "-> distractionFreeMode = $distractionFreeMode")
 
         if (actionBar != null) {
             if (distractionFreeMode) {
