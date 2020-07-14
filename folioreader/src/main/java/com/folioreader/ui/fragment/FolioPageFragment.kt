@@ -204,7 +204,7 @@ class FolioPageFragment : Fragment(),
 
 
         // btn.setOnClickListener {
-        //     Log.v("test", "======>")
+            Log.v("test", "======>")
         // }
         return mRootView
     }

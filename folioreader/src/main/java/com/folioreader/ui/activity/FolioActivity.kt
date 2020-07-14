@@ -762,7 +762,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     }
 
     private fun showSystemUI() {
-        Log.v(LOG_TAG, "-> showSystemUI")
+        // Log.v(LOG_TAG, "-> showSystemUI")
 
         if (Build.VERSION.SDK_INT >= 16) {
             val decorView = window.decorView
@@ -778,7 +778,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     }
 
     override fun hideSystemUI() {
-        Log.v(LOG_TAG, "-> hideSystemUI")
+        // Log.v(LOG_TAG, "-> hideSystemUI")
         if (distractionFreeMode) {
             return
         }
@@ -819,9 +819,10 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
      * @return true if href is of EPUB or false if other link
      */
     override fun goToChapter(href: String): Boolean {
-
+        // Log.v(LOG_TAG, "href -> " + href)
         for (link in spine!!) {
             if (href.contains(link.href!!)) {
+
                 currentChapterIndex = spine!!.indexOf(link)
                 mFolioPageViewPager!!.currentItem = currentChapterIndex
                 val folioPageFragment = currentFragment
@@ -830,6 +831,13 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
                 return true
             }
         }
+
+        val linkCover =  "/OEBPS/Text/Section0001.xhtml"
+        currentChapterIndex = 0
+        mFolioPageViewPager!!.currentItem = currentChapterIndex
+        val folioPageFragment = currentFragment
+        folioPageFragment!!.scrollToFirst()
+        folioPageFragment.scrollToAnchorId(linkCover)
         return false
     }
 
@@ -916,7 +924,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
             override fun onPageSelected(position: Int) {
-                Log.v(LOG_TAG, "-> onPageSelected -> DirectionalViewpager -> position = $position")
+                // Log.v(LOG_TAG, "-> onPageSelected -> DirectionalViewpager -> position = $position")
 
                 EventBus.getDefault().post(
                     MediaOverlayPlayPauseEvent(
