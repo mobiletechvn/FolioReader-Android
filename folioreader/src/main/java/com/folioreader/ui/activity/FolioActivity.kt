@@ -161,6 +161,23 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         }
     }
 
+    /*
+on go background => Save state
+07-14 18:32:54.972 24028-24028/com.money24h.vn D/PDYLifeCycleHandler: onActivityPaused: com.folioreader.ui.activity.FolioActivity
+07-14 18:32:55.811 24028-24028/com.money24h.vn D/PDYLifeCycleHandler: onActivitySaveInstanceState: com.folioreader.ui.activity.FolioActivity
+07-14 18:32:55.812 24028-24028/com.money24h.vn V/FolioActivity: -> onSaveInstanceState
+07-14 18:32:55.813 24028-24028/com.money24h.vn D/PDYLifeCycleHandler: onActivityStopped: com.folioreader.ui.activity.FolioActivity
+07-14 18:32:55.833 24028-24028/com.money24h.vn V/FolioActivity: -> onStop
+
+on press back ==> Likely to destroy
+07-14 18:33:31.827 24028-24028/com.money24h.vn D/PDYLifeCycleHandler: onActivityPaused: com.folioreader.ui.activity.FolioActivity
+07-14 18:33:31.842 24028-24028/com.money24h.vn D/PDYLifeCycleHandler: onActivityStarted: MainActivity
+07-14 18:33:31.907 24028-24028/com.money24h.vn D/PDYLifeCycleHandler: onActivityResumed: MainActivity
+07-14 18:33:32.411 24028-24028/com.money24h.vn D/PDYLifeCycleHandler: onActivityStopped: com.folioreader.ui.activity.FolioActivity
+07-14 18:33:32.414 24028-24028/com.money24h.vn V/FolioActivity: -> onStop
+
+     */
+
     val statusBarHeight: Int
         get() {
             var result = 0
@@ -886,6 +903,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.v(LOG_TAG, "-> onDestroy -> ")
 
         if (outState != null)
             outState!!.putSerializable(BUNDLE_READ_LOCATOR_CONFIG_CHANGE, lastReadLocator)
@@ -1035,6 +1053,11 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         outState.putBoolean(BUNDLE_DISTRACTION_FREE_MODE, distractionFreeMode)
         outState.putBundle(SearchAdapter.DATA_BUNDLE, searchAdapterDataBundle)
         outState.putCharSequence(SearchActivity.BUNDLE_SAVE_SEARCH_QUERY, searchQuery)
+
+        //
+        if (FolioReader.get().onSaveStateListener != null) {
+            FolioReader.get().onSaveStateListener.onSaveInstanceState()
+        }
     }
 
     override fun storeLastReadLocator(lastReadLocator: ReadLocator) {
