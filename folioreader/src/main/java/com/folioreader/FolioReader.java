@@ -54,6 +54,7 @@ public class FolioReader {
     private OnHighlightListener onHighlightListener;
     private ReadLocatorListener readLocatorListener;
     private OnClosedListener onClosedListener;
+    private OnSaveStateListener onSaveStateListener;
     private ReadLocator readLocator;
     private String link;
     private String statusTooltip;
@@ -71,6 +72,10 @@ public class FolioReader {
          * an epub again from your application.
          */
         void onFolioReaderClosed();
+    }
+
+    public interface OnSaveStateListener {
+        void onSaveInstanceState();
     }
 
     private BroadcastReceiver highlightReceiver = new BroadcastReceiver() {
@@ -132,6 +137,13 @@ public class FolioReader {
                 new IntentFilter(ACTION_SAVE_READ_LOCATOR));
         localBroadcastManager.registerReceiver(closedReceiver,
                 new IntentFilter(ACTION_FOLIOREADER_CLOSED));
+
+        this.onSaveStateListener = new OnSaveStateListener() {
+            @Override
+            public void onSaveInstanceState() {
+                Log.d("FolioReader", "onSaveInstanceState: default, you need to override this");
+            }
+        };
     }
 
     public FolioReader openBook(String assetOrSdcardPath) {
@@ -245,6 +257,15 @@ public class FolioReader {
     public FolioReader setOnClosedListener(OnClosedListener onClosedListener) {
         this.onClosedListener = onClosedListener;
         return singleton;
+    }
+
+    public FolioReader setOnSaveStateListener(OnSaveStateListener listener) {
+        this.onSaveStateListener = listener;
+        return singleton;
+    }
+
+    public OnSaveStateListener getOnSaveStateListener() {
+        return this.onSaveStateListener;
     }
 
     public FolioReader setReadLocator(ReadLocator readLocator) {
