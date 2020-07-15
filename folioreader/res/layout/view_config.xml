@@ -74,7 +74,7 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:gravity="center"
-        android:text="Times"
+        android:text="Lora"
         android:textSize="17sp"
         app:folio_font="@string/raleway_font"
         app:layout_constraintEnd_toEndOf="parent"
