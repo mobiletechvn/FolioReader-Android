@@ -237,7 +237,7 @@ html.nightMode .highlight_underline {border-bottom: 2px solid rgba(240, 40, 20, 
 
 @font-face {
     font-family: 'lato';
-    src: url('file:///android_asset/fonts/roboto/Roboto-Regular.ttf');
+    src: local('Roboto Regular'), url('file:///android_asset/fonts/roboto/Roboto-Regular.ttf');
 }
 
 @font-face {
