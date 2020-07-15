@@ -763,7 +763,9 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
     private fun showSystemUI() {
         // Log.v(LOG_TAG, "-> showSystemUI")
-
+        if (!distractionFreeMode) {
+            return
+        }   
         if (Build.VERSION.SDK_INT >= 16) {
             val decorView = window.decorView
             decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
