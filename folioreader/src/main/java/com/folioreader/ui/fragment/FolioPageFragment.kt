@@ -364,10 +364,10 @@ class FolioPageFragment : Fragment(),
         try {
             val pageIndex = mActivityCallback!!.currentChapterIndex
             Log.v(LOG_TAG, "-> pageIndex count -> ${pageIndex}")
-            // if (pageIndex == 2 && !mIsShowRemindPurchase && mLink!!.length > 0) {
-            //   mIsShowRemindPurchase = true
-            //   showRemindPurchase()
-            // }
+            if (pageIndex == 2 && !mIsShowRemindPurchase && mLink!!.length > 0) {
+              mIsShowRemindPurchase = true
+              showRemindPurchase()
+            }
         } catch (e: Exception) {
             Log.e(LOG_TAG, "shouldInterceptRequest failed", e)
         }
@@ -812,18 +812,7 @@ class FolioPageFragment : Fragment(),
                 pagesRemainingStrFormat, pagesRemaining
             )
 
-            try {
-                val pageIndex = mActivityCallback!!.currentChapterIndex
-                // Log.v(LOG_TAG, "-> pageIndex count -> ${pageIndex}")
-                // Log.v(LOG_TAG, "-> pageremain count -> ${pagesRemaining}")
-                if (pageIndex == 2 && !mIsShowRemindPurchase && mLink!!.length > 0 && pagesRemaining == 1) {
-                  mIsShowRemindPurchase = true
-                  showRemindPurchase()
-                }
-
-            } catch (e: Exception) {
-                Log.e(LOG_TAG, "shouldInterceptRequest failed", e)
-            }
+            
             
             val minutesRemaining = Math.ceil((pagesRemaining * mTotalMinutes).toDouble() / totalPages).toInt()
             val minutesRemainingStr: String
