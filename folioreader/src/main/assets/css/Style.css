@@ -264,10 +264,15 @@ html.nightMode .highlight_underline {border-bottom: 2px solid rgba(240, 40, 20, 
  }
 
 html.textSizeOne { font-size: 13px !important; }
+html.textSizeOne div{ font-size: 13px !important; }
 html.textSizeTwo { font-size: 15px !important; }
+html.textSizeTwo div{ font-size: 15px !important; }
 html.textSizeThree { font-size: 17px !important; }
+html.textSizeThree div{ font-size: 17px !important; }
 html.textSizeFour { font-size: 19px !important; }
+html.textSizeFour div{ font-size: 19px !important; }
 html.textSizeFive { font-size: 21px !important; }
+html.textSizeFive div{ font-size: 21px !important; }
 
 h1 {
     font-size: 2rem;
