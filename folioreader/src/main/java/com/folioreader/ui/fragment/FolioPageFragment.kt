@@ -54,6 +54,17 @@ import java.util.regex.Pattern
 import android.app.AlertDialog;
 import android.widget.Toast
 import android.content.DialogInterface
+import android.graphics.drawable.ColorDrawable
+import android.widget.ImageView
+import kotlinx.android.synthetic.main.login.*
+import kotlinx.android.synthetic.main.tooltip_second.*
+import android.view.WindowManager
+import android.view.Window;
+import android.view.Gravity;
+import android.view.ViewGroup.LayoutParams
+import com.folioreader.ui.view.ConfigBottomSheetDialogFragment
+// import android.support.v4.app.FragmentManager;
+ import androidx.fragment.app.FragmentManager;
 /**
  * Created by mahavir on 4/2/16.
  */
@@ -72,12 +83,15 @@ class FolioPageFragment : Fragment(),
         const val BUNDLE_SEARCH_LOCATOR = "BUNDLE_SEARCH_LOCATOR"
 
         @JvmStatic
-        fun newInstance(spineIndex: Int, bookTitle: String, spineRef: Link, bookId: String): FolioPageFragment {
+        fun newInstance(spineIndex: Int, bookTitle: String, spineRef: Link, bookId: String, link: String, statusTooltip: String): FolioPageFragment {
             val fragment = FolioPageFragment()
             val args = Bundle()
             args.putInt(BUNDLE_SPINE_INDEX, spineIndex)
             args.putString(BUNDLE_BOOK_TITLE, bookTitle)
             args.putString(FolioReader.EXTRA_BOOK_ID, bookId)
+            args.putString(FolioReader.EXTRA_BOOK_ID2, bookId)
+            args.putString(FolioReader.EXTRA_LINK, link)
+            args.putString(FolioReader.EXTRA_STATUS_TOOLTIP, statusTooltip)
             args.putSerializable(BUNDLE_SPINE_ITEM, spineRef)
             fragment.arguments = args
             return fragment
@@ -96,6 +110,7 @@ class FolioPageFragment : Fragment(),
     private var savedInstanceState: Bundle? = null
 
     private var mRootView: View? = null
+    private var mRootView2: View? = null
 
     private var loadingView: LoadingView? = null
     private var mScrollSeekbar: VerticalSeekbar? = null
@@ -113,13 +128,17 @@ class FolioPageFragment : Fragment(),
     private var spineIndex = -1
     private var mBookTitle: String? = null
     private var mIsPageReloaded: Boolean = false
+    private var mIsShowRemindPurchase: Boolean = false
     private var popupShowed: Boolean = false
+    private var test: Boolean = false
 
     private var highlightStyle: String? = null
 
     private var mediaController: MediaController? = null
     private var mConfig: Config? = null
     private var mBookId: String? = null
+    private var mLink: String? = null
+    private var mStatusTooltip: String? = null
     var searchLocatorVisible: SearchLocator? = null
 
     private lateinit var chapterUrl: Uri
@@ -149,6 +168,8 @@ class FolioPageFragment : Fragment(),
         mBookTitle = arguments!!.getString(BUNDLE_BOOK_TITLE)
         spineItem = arguments!!.getSerializable(BUNDLE_SPINE_ITEM) as Link
         mBookId = arguments!!.getString(FolioReader.EXTRA_BOOK_ID)
+        mLink = arguments!!.getString(FolioReader.EXTRA_LINK)
+        mStatusTooltip = arguments!!.getString(FolioReader.EXTRA_STATUS_TOOLTIP)
 
         chapterUrl = Uri.parse(mActivityCallback?.streamerUrl + spineItem.href!!.substring(1))
 
@@ -176,8 +197,6 @@ class FolioPageFragment : Fragment(),
         initAnimations()
         initWebView()
         updatePagesLeftTextBg()
-
-
 
 
 
@@ -245,7 +264,7 @@ class FolioPageFragment : Fragment(),
     fun reload(reloadDataEvent: ReloadDataEvent) {
 
         if (isCurrentFragment)
-            getLastReadLocator()
+            load()
 
         if (isAdded) {
             mWebview!!.dismissPopupWindow()
@@ -336,8 +355,17 @@ class FolioPageFragment : Fragment(),
 
     fun scrollToLast() {
         val isPageLoading = loadingView == null || loadingView!!.visibility == View.VISIBLE
-        Log.v(LOG_TAG, "-> scrollToLast -> isPageLoading = $isPageLoading")
-
+        try {
+            val pageIndex = mActivityCallback!!.currentChapterIndex
+            Log.v(LOG_TAG, "-> pageIndex count -> ${pageIndex}")
+            if (pageIndex == 2 && !mIsShowRemindPurchase && mLink!!.length > 0) {
+              mIsShowRemindPurchase = true
+              showRemindPurchase()
+            }
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "shouldInterceptRequest failed", e)
+        }
+        
         if (!isPageLoading) {
             loadingView!!.show()
             mWebview!!.loadUrl("javascript:scrollToLast()")
@@ -352,22 +380,69 @@ class FolioPageFragment : Fragment(),
                     .setPositiveButton("Mua ngay", DialogInterface.OnClickListener {
                         dialog, id ->
                         val openURL = Intent(android.content.Intent.ACTION_VIEW)
-                        openURL.data = Uri.parse("https://www.tutorialkart.com/")
+                        openURL.data = Uri.parse(mLink)
                         startActivity(openURL)
                         dialog.dismiss()
                     })
                     .setNegativeButton("Để sau", DialogInterface.OnClickListener {
                         dialog, id ->
                         dialog.dismiss()
+                        mActivityCallback!!.hideSystemUI()
 
                     })
             val alert = dialogBuilder.create()
+            alert.setOnCancelListener {  func ->  mActivityCallback!!.hideSystemUI()}
+
             alert.setTitle("")
             alert.show()
     }
 
-    fun scrollToFirst() {
+    fun showGuidePopup() {
+        val mDialogView = LayoutInflater.from(getActivity()).inflate(R.layout.login, null)
+        //AlertDialogBuilder
+        val mBuilder = AlertDialog.Builder(getActivity())
+                .setView(mDialogView)
+                // .setTitle("Login Form")
+        //show dialog
+        val  mAlertDialog = mBuilder.show()
+        val dialogButton:ImageView = mAlertDialog.findViewById(R.id.btn_tooltip1)
+        // mRootView2 = getLayoutInflater().inflate(R.layout.login, container, false)
 
+
+        // val btn = findViewById(R.id.btn_tooltip1) as ImageView
+        dialogButton.setOnClickListener {
+            // onBackPressed()
+            mAlertDialog.dismiss()
+            showGuidePopup2()
+        }
+        mAlertDialog.setOnCancelListener {  func ->  showGuidePopup2()}
+
+        // mAlertDialog.getWindow().setGravity(Gravity.TOP)
+        mAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
+    fun showGuidePopup2() {
+        val mDialogView = LayoutInflater.from(getActivity()).inflate(R.layout.tooltip_second, null)
+        //AlertDialogBuilder
+        val mBuilder = AlertDialog.Builder(getActivity())
+                .setView(mDialogView)
+                // .setTitle("Login Form")
+        //show dialog
+        val  mAlertDialog = mBuilder.show()
+
+        val dialogButton:ImageView = mAlertDialog.findViewById(R.id.btn_tooltip2)
+        dialogButton.setOnClickListener {
+            mAlertDialog.dismiss()
+            showConfigBottomSheetDialogFragment()
+        }
+
+        mAlertDialog.getWindow().setGravity(Gravity.TOP)
+        mAlertDialog.getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+
+        mAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
+    fun scrollToFirst() {
         val isPageLoading = loadingView == null || loadingView!!.visibility == View.VISIBLE
         Log.v(LOG_TAG, "-> scrollToFirst -> isPageLoading = $isPageLoading")
 
@@ -420,6 +495,7 @@ class FolioPageFragment : Fragment(),
 
         mWebview!!.settings.defaultTextEncodingName = "utf-8"
         HtmlTask(this).execute(chapterUrl.toString())
+        mActivityCallback!!.hideSystemUI()
     }
 
     private val webViewClient = object : WebViewClient() {
@@ -488,6 +564,14 @@ class FolioPageFragment : Fragment(),
 
             } else if (isCurrentFragment) {
 
+                if (mActivityCallback!!.getTooltipStep().count() < 2 && mStatusTooltip!!.count() > 0) {
+                  showGuidePopup()
+                  mActivityCallback!!.setTooltipStep()
+                }
+        
+                // val a = mActivityCallback!!.getTooltipStatus()
+                // mActivityCallback!!.setTooltipStatus()
+
                 val readLocator: ReadLocator?
                 if (savedInstanceState == null) {
                     Log.v(LOG_TAG, "-> onPageFinished -> took from getEntryReadLocator")
@@ -516,6 +600,7 @@ class FolioPageFragment : Fragment(),
                     loadingView!!.hide()
                 }
             }
+
 
             Log.d("length", mActivityCallback!!.currentChapterIndex.toString())
 
@@ -610,8 +695,20 @@ class FolioPageFragment : Fragment(),
         mediaController!!.stop()
         //TODO save last media overlay item
 
-        if (isCurrentFragment)
-            getLastReadLocator()
+       
+    }
+
+    fun load() {
+        Log.v(LOG_TAG, "-> getLastReadLocator2 -> " + spineItem.href!!)
+        try {
+            synchronized(this) {
+                mWebview!!.loadUrl(getString(R.string.callComputeLastReadCfi2))
+                (this as java.lang.Object).wait(5000)
+            }
+        } catch (e: InterruptedException) {
+            Log.e(LOG_TAG, "-> ", e)
+        }
+
     }
 
     fun getLastReadLocator(): ReadLocator? {
@@ -629,7 +726,7 @@ class FolioPageFragment : Fragment(),
     }
 
     @JavascriptInterface
-    fun storeLastReadCfi(cfi: String) {
+    fun storeLastReadCfi(cfi: String, noCallback: Boolean) {
 
         synchronized(this) {
             var href = spineItem.href
@@ -639,9 +736,11 @@ class FolioPageFragment : Fragment(),
             locations.cfi = cfi
             lastReadLocator = ReadLocator(mBookId!!, href, created, locations)
 
-            val intent = Intent(FolioReader.ACTION_SAVE_READ_LOCATOR)
-            intent.putExtra(FolioReader.EXTRA_READ_LOCATOR, lastReadLocator as Parcelable?)
-            LocalBroadcastManager.getInstance(context!!).sendBroadcast(intent)
+            if (!noCallback) {
+                val intent = Intent(FolioReader.ACTION_SAVE_READ_LOCATOR)
+                intent.putExtra(FolioReader.EXTRA_READ_LOCATOR, lastReadLocator as Parcelable?)
+                LocalBroadcastManager.getInstance(context!!).sendBroadcast(intent)
+            }
 
             (this as java.lang.Object).notify()
         }
@@ -707,24 +806,18 @@ class FolioPageFragment : Fragment(),
                 pagesRemainingStrFormat, pagesRemaining
             )
 
-               Log.v(LOG_TAG, "-> chap -> ${this.popupShowed}")
-
-            if (mActivityCallback!!.currentChapterIndex > 0 && pagesRemaining == 1) {
-               Log.v(LOG_TAG, "-> pagesRemaining -> ${pagesRemaining}")
-               this.popupShowed = true
-               popupShowed = true
-               showRemindPurchase()
-            } 
             
-
+            
             val minutesRemaining = Math.ceil((pagesRemaining * mTotalMinutes).toDouble() / totalPages).toInt()
             val minutesRemainingStr: String
+
             if (minutesRemaining > 1) {
                 minutesRemainingStr = String.format(
                     Locale.US, getString(R.string.minutes_left),
                     minutesRemaining
                 )
             } else if (minutesRemaining == 1) {
+
                 minutesRemainingStr = String.format(
                     Locale.US, getString(R.string.minute_left),
                     minutesRemaining
@@ -874,7 +967,9 @@ class FolioPageFragment : Fragment(),
 
     override fun onDestroy() {
         super.onDestroy()
-
+         if (isCurrentFragment)
+            getLastReadLocator()
+            
         if (isCurrentFragment) {
             if (outState != null)
                 outState!!.putSerializable(BUNDLE_READ_LOCATOR_CONFIG_CHANGE, lastReadLocator)
@@ -915,4 +1010,12 @@ class FolioPageFragment : Fragment(),
         mWebview!!.loadUrl(getString(R.string.callClearSelection))
         searchLocatorVisible = null
     }
+
+    fun showConfigBottomSheetDialogFragment() {
+        ConfigBottomSheetDialogFragment().show(
+             getActivity()!!.getSupportFragmentManager(),
+            ConfigBottomSheetDialogFragment.LOG_TAG
+        )
+    }
+
 }
