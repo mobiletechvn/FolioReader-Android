@@ -197,15 +197,9 @@ class FolioPageFragment : Fragment(),
         initAnimations()
         initWebView()
         updatePagesLeftTextBg()
-        // mRootView2 = getLayoutInflater().inflate(R.layout.login, container, false)
 
 
-        // val btn:ImageView = mRootView2!!.findViewById(R.id.btn_tooltip1)
 
-
-        // btn.setOnClickListener {
-            Log.v("test", "======>")
-        // }
         return mRootView
     }
 
