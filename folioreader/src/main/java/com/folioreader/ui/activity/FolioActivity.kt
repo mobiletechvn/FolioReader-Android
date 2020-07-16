@@ -251,6 +251,10 @@ on press back ==> Likely to destroy
         hideSystemUI()
         topActivity = true
 
+        if (FolioReader.get().readerCloseListener != null) {
+            FolioReader.get().readerCloseListener.onResume()
+        }
+
         val action = intent.action
         if (action != null && action == FolioReader.ACTION_CLOSE_FOLIOREADER) {
             // FolioActivity is topActivity, so need to broadcast ReadLocator.
@@ -1054,9 +1058,8 @@ on press back ==> Likely to destroy
         outState.putBundle(SearchAdapter.DATA_BUNDLE, searchAdapterDataBundle)
         outState.putCharSequence(SearchActivity.BUNDLE_SAVE_SEARCH_QUERY, searchQuery)
 
-        //
-        if (FolioReader.get().onSaveStateListener != null) {
-            FolioReader.get().onSaveStateListener.onSaveInstanceState()
+        if (FolioReader.get().readerCloseListener != null) {
+            FolioReader.get().readerCloseListener.onSaveInstanceState()
         }
     }
 
