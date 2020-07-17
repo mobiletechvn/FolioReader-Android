@@ -207,9 +207,24 @@ html.nightMode {
     background-color: #131313 !important;
 }
 
-.nightMode p, .nightMode div, .nightMode a, .nightMode span  {
+html.nightMode p, html.nightMode div, html.nightMode a, html.nightMode span, html.nightMode div span, html.nightMode div div span, html.nightMode div div div span  {
     color: #f2f2f2 !important;
     background-color: transparent !important;
+}
+
+html.nightMode p, html.nightMode div, html.nightMode a, html.nightMode *, html.nightMode div *, html.nightMode div div *, html.nightMode div div div *  {
+    color: #f2f2f2 !important;
+    background-color: transparent !important;
+}
+
+.nightMode .pc div div div {
+    color: red !important;
+
+}
+
+.nightMode .pc div div {
+    color: red !important;
+
 }
 
 .nightMode h1, .nightMode h2, .nightMode h3, .nightMode h4, .nightMode h5, .nightMode h6 {
