@@ -75,6 +75,7 @@ import org.readium.r2.streamer.server.Server
 import java.lang.ref.WeakReference
 import android.widget.ImageView
 import android.graphics.Color;
+import com.folioreader.ui.view.*
 
 class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControllerCallback,
     View.OnSystemUiVisibilityChangeListener {
@@ -980,6 +981,29 @@ on press back ==> Likely to destroy
                         folioPageFragment.scrollToFirst()
                         if (folioPageFragment.mWebview != null)
                             folioPageFragment.mWebview!!.dismissPopupWindow()
+                    } else {
+                        // last chapter
+                        if(direction === Config.Direction.HORIZONTAL){
+                            // is horizontal scroll 
+                            folioPageFragment = mFolioPageFragmentAdapter!!.getItem(position) as FolioPageFragment?
+
+                            var totalPageLength = folioPageFragment?.webViewPager?.adapter?.count
+
+                            val lastPageIndex = if (totalPageLength != null) totalPageLength.minus(1) else 999
+                            val currentIndex = folioPageFragment?.webViewPager?.currentItem
+                            if (currentIndex === lastPageIndex) {
+                                // Show remind purchase in last page in last chapter.
+                                folioPageFragment?.showRemindPurchase()
+                            }
+                        } else {
+                            // is vertical scroll
+                            folioPageFragment = mFolioPageFragmentAdapter!!.getItem(position) as FolioPageFragment?
+                            var webView = folioPageFragment?.mWebview?.isReachEnd as Boolean;
+                            if (webView) {
+                                // is last webview reach end.
+                                folioPageFragment?.showRemindPurchase()
+                            }
+                        }
                     }
                 }
             }

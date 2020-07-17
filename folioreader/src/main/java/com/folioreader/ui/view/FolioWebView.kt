@@ -114,6 +114,7 @@ class FolioWebView : WebView {
     val webViewHeight: Int
         get() = this.measuredHeight
 
+    var isReachEnd: Boolean = false
     private enum class LastScrollType {
         USER, PROGRAMMATIC
     }
@@ -456,6 +457,7 @@ class FolioWebView : WebView {
         }
 
         lastScrollType = null
+        this.isReachEnd = (scrollY - contentHeight) >= 10
     }
 
     interface ScrollListener {
