@@ -980,12 +980,6 @@ on press back ==> Likely to destroy
                         folioPageFragment.scrollToFirst()
                         if (folioPageFragment.mWebview != null)
                             folioPageFragment.mWebview!!.dismissPopupWindow()
-                    } else {
-                        // don't have next page --> Last page.
-                        // Logic: Show buy popup here.
-                        val folioPageFragmentCrr = mFolioPageFragmentAdapter!!.getItem(position) as FolioPageFragment?
-                        folioPageFragmentCrr?.showRemindPurchase()
-
                     }
                 }
             }
