@@ -217,16 +217,6 @@ html.nightMode p, html.nightMode div, html.nightMode a, html.nightMode *, html.n
     background-color: transparent !important;
 }
 
-.nightMode .pc div div div {
-    color: red !important;
-
-}
-
-.nightMode .pc div div {
-    color: red !important;
-
-}
-
 .nightMode h1, .nightMode h2, .nightMode h3, .nightMode h4, .nightMode h5, .nightMode h6 {
     color: #f2f2f2 !important;
 
