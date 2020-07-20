@@ -993,7 +993,7 @@ on press back ==> Likely to destroy
                             val currentIndex = folioPageFragment?.webViewPager?.currentItem
                             if (currentIndex === lastPageIndex) {
                                 // Show remind purchase in last page in last chapter.
-                                folioPageFragment?.showRemindPurchase()
+                                folioPageFragment?.showRemindPurchase(true)
                             }
                         } else {
                             // is vertical scroll
@@ -1001,7 +1001,7 @@ on press back ==> Likely to destroy
                             var webView = folioPageFragment?.mWebview?.isReachEnd as Boolean;
                             if (webView) {
                                 // is last webview reach end.
-                                folioPageFragment?.showRemindPurchase()
+                                folioPageFragment?.showRemindPurchase(true)
                             }
                         }
                     }
