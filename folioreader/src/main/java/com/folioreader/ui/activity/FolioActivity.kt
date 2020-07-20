@@ -75,6 +75,7 @@ import org.readium.r2.streamer.server.Server
 import java.lang.ref.WeakReference
 import android.widget.ImageView
 import android.graphics.Color;
+import com.folioreader.ui.view.*
 
 class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControllerCallback,
     View.OnSystemUiVisibilityChangeListener {
@@ -250,6 +251,10 @@ on press back ==> Likely to destroy
         Log.v(LOG_TAG, "-> onResume")
         hideSystemUI()
         topActivity = true
+
+        if (FolioReader.get().readerCloseListener != null) {
+            FolioReader.get().readerCloseListener.onResume()
+        }
 
         val action = intent.action
         if (action != null && action == FolioReader.ACTION_CLOSE_FOLIOREADER) {
@@ -976,6 +981,29 @@ on press back ==> Likely to destroy
                         folioPageFragment.scrollToFirst()
                         if (folioPageFragment.mWebview != null)
                             folioPageFragment.mWebview!!.dismissPopupWindow()
+                    } else {
+                        // last chapter
+                        if(direction === Config.Direction.HORIZONTAL){
+                            // is horizontal scroll 
+                            folioPageFragment = mFolioPageFragmentAdapter!!.getItem(position) as FolioPageFragment?
+
+                            var totalPageLength = folioPageFragment?.webViewPager?.adapter?.count
+
+                            val lastPageIndex = if (totalPageLength != null) totalPageLength.minus(1) else 999
+                            val currentIndex = folioPageFragment?.webViewPager?.currentItem
+                            if (currentIndex === lastPageIndex) {
+                                // Show remind purchase in last page in last chapter.
+                                folioPageFragment?.showRemindPurchase()
+                            }
+                        } else {
+                            // is vertical scroll
+                            folioPageFragment = mFolioPageFragmentAdapter!!.getItem(position) as FolioPageFragment?
+                            var webView = folioPageFragment?.mWebview?.isReachEnd as Boolean;
+                            if (webView) {
+                                // is last webview reach end.
+                                folioPageFragment?.showRemindPurchase()
+                            }
+                        }
                     }
                 }
             }
@@ -1056,9 +1084,8 @@ on press back ==> Likely to destroy
         outState.putBundle(SearchAdapter.DATA_BUNDLE, searchAdapterDataBundle)
         outState.putCharSequence(SearchActivity.BUNDLE_SAVE_SEARCH_QUERY, searchQuery)
 
-        //
-        if (FolioReader.get().onSaveStateListener != null) {
-            FolioReader.get().onSaveStateListener.onSaveInstanceState()
+        if (FolioReader.get().readerCloseListener != null) {
+            FolioReader.get().readerCloseListener.onSaveInstanceState()
         }
     }
 
