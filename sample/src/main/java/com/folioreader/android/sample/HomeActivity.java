@@ -86,8 +86,9 @@ public class HomeActivity extends AppCompatActivity
                 folioReader.setReadLocator(readLocator);
                 folioReader.setConfig(config, true)
                         // .openBook("file:///android_asset/test.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
+                        .openBook("file:///android_asset/ray-kroc-da-tao-da-tao-nen-thuong-hieu-mcdonald-39-s-nhu-the-nao1594880865.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
                         // .openBook("file:///android_asset/thuat-quan-tri1594890454.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
-                        .openBook("file:///android_asset/Sachvuicom-chieu-bai-quan-ly-vang-cua-bill-gates-thuong-mo.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
+                        // .openBook("file:///android_asset/Sachvuicom-chieu-bai-quan-ly-vang-cua-bill-gates-thuong-mo.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
                         // .openBook("file:///android_asset/7-nguyen-tac-bat-bien-de-xay-dung-doanh-nghiep-nho1594352236.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
                         // .openBook("file:///android_asset/90-ngay-dau-tien-lam-sep1594605101.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
                         // .openBook("file:///android_asset/Sachvui.Com-7-nguyen-tac-bat-bien-de-xay-dung-doanh-nghiep-nho-steven-s-little.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
