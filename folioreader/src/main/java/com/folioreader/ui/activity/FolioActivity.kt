@@ -300,15 +300,15 @@ on press back ==> Likely to destroy
             searchQuery = savedInstanceState.getCharSequence(SearchActivity.BUNDLE_SAVE_SEARCH_QUERY)
         }
 
-        mBookId = intent.getStringExtra(FolioReader.EXTRA_BOOK_ID)
-        mLink = intent.getStringExtra(FolioReader.EXTRA_LINK)
-        mStatusTooltip = intent.getStringExtra(FolioReader.EXTRA_STATUS_TOOLTIP)
+        mBookId = intent!!.getStringExtra(FolioReader.EXTRA_BOOK_ID)
+        mLink = intent!!.getStringExtra(FolioReader.EXTRA_LINK)
+        mStatusTooltip = intent!!.getStringExtra(FolioReader.EXTRA_STATUS_TOOLTIP)
 
-        mEpubSourceType = intent.extras!!.getSerializable(FolioActivity.INTENT_EPUB_SOURCE_TYPE) as EpubSourceType
+        mEpubSourceType = intent!!.extras!!.getSerializable(FolioActivity.INTENT_EPUB_SOURCE_TYPE) as EpubSourceType
         if (mEpubSourceType == EpubSourceType.RAW) {
-            mEpubRawId = intent.extras!!.getInt(FolioActivity.INTENT_EPUB_SOURCE_PATH)
+            mEpubRawId = intent!!.extras!!.getInt(FolioActivity.INTENT_EPUB_SOURCE_PATH)
         } else {
-            mEpubFilePath = intent.extras!!
+            mEpubFilePath = intent!!.extras!!
                 .getString(FolioActivity.INTENT_EPUB_SOURCE_PATH)
         }
 
