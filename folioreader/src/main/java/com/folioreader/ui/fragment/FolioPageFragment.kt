@@ -372,9 +372,13 @@ class FolioPageFragment : Fragment(),
         }
     }
 
-    fun showRemindPurchase() {
+    fun showRemindPurchase(isLastPage:Boolean = false ) {
             val dialogBuilder = AlertDialog.Builder(getActivity())
-            dialogBuilder.setMessage("Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!")
+            var message = "Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!";
+            if (isLastPage) {
+                message = "Các chương đọc miễn phí đã hết. Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!"
+            }
+            dialogBuilder.setMessage(message)
                     // if the dialog is cancelable
                     .setCancelable(true)
                     .setPositiveButton("Mua ngay", DialogInterface.OnClickListener {
