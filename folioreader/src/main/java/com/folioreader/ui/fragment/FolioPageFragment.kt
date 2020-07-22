@@ -356,12 +356,13 @@ class FolioPageFragment : Fragment(),
     fun scrollToLast() {
         val isPageLoading = loadingView == null || loadingView!!.visibility == View.VISIBLE
         try {
-            val pageIndex = mActivityCallback!!.currentChapterIndex
-            Log.v(LOG_TAG, "-> pageIndex count -> ${pageIndex}")
-            if (pageIndex == 2 && !mIsShowRemindPurchase && mLink!!.length > 0) {
-              mIsShowRemindPurchase = true
-              showRemindPurchase()
-            }
+            // deprecated
+            // val pageIndex = mActivityCallback!!.currentChapterIndex
+            // Log.v(LOG_TAG, "-> pageIndex count -> ${pageIndex}")
+            // if (pageIndex == 2 && !mIsShowRemindPurchase && mLink!!.length > 0) {
+            //   mIsShowRemindPurchase = true
+            //   showRemindPurchase()
+            // }
         } catch (e: Exception) {
             Log.e(LOG_TAG, "shouldInterceptRequest failed", e)
         }
