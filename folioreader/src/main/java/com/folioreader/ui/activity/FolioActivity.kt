@@ -249,7 +249,7 @@ on press back ==> Likely to destroy
     override fun onResume() {
         super.onResume()
         Log.v(LOG_TAG, "-> onResume")
-        hideSystemUI()
+        // hideSystemUI()
         topActivity = true
 
         if (FolioReader.get().readerCloseListener != null) {
@@ -641,7 +641,7 @@ on press back ==> Likely to destroy
         window.decorView.setOnSystemUiVisibilityChangeListener(this)
 
         // Deliberately Hidden and shown to make activity contents lay out behind SystemUI
-        hideSystemUI()
+        // hideSystemUI()
         // showSystemUI()
 
         distractionFreeMode = savedInstanceState != null && savedInstanceState.getBoolean(BUNDLE_DISTRACTION_FREE_MODE)
