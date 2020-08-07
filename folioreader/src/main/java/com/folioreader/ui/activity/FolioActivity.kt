@@ -649,7 +649,6 @@ on press back ==> Likely to destroy
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        // Log.v(LOG_TAG, "-> onPostCreate")
 
         if (distractionFreeMode) {
             handler!!.post { hideSystemUI() }
@@ -802,7 +801,7 @@ on press back ==> Likely to destroy
     }
 
     override fun hideSystemUI() {
-        // Log.v(LOG_TAG, "-> hideSystemUI")
+        // Log.v(LOG_TAG, "crollToFirst -> isPageLoading-> hideSystemUI")
         if (distractionFreeMode) {
             return
         }

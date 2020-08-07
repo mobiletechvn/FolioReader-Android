@@ -129,6 +129,7 @@ class FolioPageFragment : Fragment(),
     private var mBookTitle: String? = null
     private var mIsPageReloaded: Boolean = false
     private var mIsShowRemindPurchase: Boolean = false
+    private var mIsBlockToggleMenu: Boolean = false
     private var popupShowed: Boolean = false
     private var test: Boolean = false
 
@@ -449,12 +450,13 @@ class FolioPageFragment : Fragment(),
 
     fun scrollToFirst() {
         val isPageLoading = loadingView == null || loadingView!!.visibility == View.VISIBLE
-        Log.v(LOG_TAG, "-> scrollToFirst -> isPageLoading = $isPageLoading")
 
         if (!isPageLoading) {
+
             loadingView!!.show()
             mWebview!!.loadUrl("javascript:scrollToFirst()")
             mActivityCallback!!.hideSystemUI()
+            mIsBlockToggleMenu = true
         }
     }
 
@@ -605,8 +607,12 @@ class FolioPageFragment : Fragment(),
                     loadingView!!.hide()
                 }
             }
+            if (!mIsBlockToggleMenu) {
+               mActivityCallback!!.hideSystemUI()
+            }
+            mIsBlockToggleMenu = false
+            // Log.v(LOG_TAG, "crollToFirst -> isPageLoading -> onPageFinished -> readLocator========> 1")
 
-            mActivityCallback!!.hideSystemUI()
             Log.d("length", mActivityCallback!!.currentChapterIndex.toString())
 
         }
