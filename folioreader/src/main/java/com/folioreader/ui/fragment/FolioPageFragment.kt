@@ -129,6 +129,7 @@ class FolioPageFragment : Fragment(),
     private var mBookTitle: String? = null
     private var mIsPageReloaded: Boolean = false
     private var mIsShowRemindPurchase: Boolean = false
+    private var mIsBlockToggleMenu: Boolean = false
     private var popupShowed: Boolean = false
     private var test: Boolean = false
 
@@ -162,7 +163,9 @@ class FolioPageFragment : Fragment(),
         if (activity is FolioActivityCallback)
             mActivityCallback = activity as FolioActivityCallback?
 
-        EventBus.getDefault().register(this)
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
 
         spineIndex = arguments!!.getInt(BUNDLE_SPINE_INDEX)
         mBookTitle = arguments!!.getString(BUNDLE_BOOK_TITLE)
@@ -403,58 +406,63 @@ class FolioPageFragment : Fragment(),
     }
 
     fun showGuidePopup() {
-        val mDialogView = LayoutInflater.from(getActivity()).inflate(R.layout.login, null)
-        //AlertDialogBuilder
-        val mBuilder = AlertDialog.Builder(getActivity())
-                .setView(mDialogView)
-                // .setTitle("Login Form")
-        //show dialog
-        val  mAlertDialog = mBuilder.show()
-        val dialogButton:ImageView = mAlertDialog.findViewById(R.id.btn_tooltip1)
-        // mRootView2 = getLayoutInflater().inflate(R.layout.login, container, false)
+        if (getActivity()!=null){
+            val mDialogView = LayoutInflater.from(getActivity()).inflate(R.layout.login, null)
+            //AlertDialogBuilder
+            val mBuilder = AlertDialog.Builder(getActivity())
+                    .setView(mDialogView)
+                    // .setTitle("Login Form")
+            //show dialog
+            val  mAlertDialog = mBuilder.show()
+            val dialogButton:ImageView = mAlertDialog.findViewById(R.id.btn_tooltip1)
+            // mRootView2 = getLayoutInflater().inflate(R.layout.login, container, false)
 
 
-        // val btn = findViewById(R.id.btn_tooltip1) as ImageView
-        dialogButton.setOnClickListener {
-            // onBackPressed()
-            mAlertDialog.dismiss()
-            showGuidePopup2()
+            // val btn = findViewById(R.id.btn_tooltip1) as ImageView
+            dialogButton.setOnClickListener {
+                // onBackPressed()
+                mAlertDialog.dismiss()
+                showGuidePopup2()
+            }
+            mAlertDialog.setOnCancelListener {  func ->  showGuidePopup2()}
+
+            // mAlertDialog.getWindow().setGravity(Gravity.TOP)
+            mAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
-        mAlertDialog.setOnCancelListener {  func ->  showGuidePopup2()}
-
-        // mAlertDialog.getWindow().setGravity(Gravity.TOP)
-        mAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     fun showGuidePopup2() {
-        val mDialogView = LayoutInflater.from(getActivity()).inflate(R.layout.tooltip_second, null)
-        //AlertDialogBuilder
-        val mBuilder = AlertDialog.Builder(getActivity())
-                .setView(mDialogView)
-                // .setTitle("Login Form")
-        //show dialog
-        val  mAlertDialog = mBuilder.show()
+        if (getActivity()!=null){
+            val mDialogView = LayoutInflater.from(getActivity()).inflate(R.layout.tooltip_second, null)
+            //AlertDialogBuilder
+            val mBuilder = AlertDialog.Builder(getActivity())
+                    .setView(mDialogView)
+                    // .setTitle("Login Form")
+            //show dialog
+            val  mAlertDialog = mBuilder.show()
 
-        val dialogButton:ImageView = mAlertDialog.findViewById(R.id.btn_tooltip2)
-        dialogButton.setOnClickListener {
-            mAlertDialog.dismiss()
-            showConfigBottomSheetDialogFragment()
-        }
+            val dialogButton:ImageView = mAlertDialog.findViewById(R.id.btn_tooltip2)
+            dialogButton.setOnClickListener {
+                mAlertDialog.dismiss()
+                showConfigBottomSheetDialogFragment()
+            }
 
-        mAlertDialog.getWindow().setGravity(Gravity.TOP)
-        mAlertDialog.getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+            mAlertDialog.getWindow().setGravity(Gravity.TOP)
+            mAlertDialog.getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 
-        mAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            mAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }    
     }
 
     fun scrollToFirst() {
         val isPageLoading = loadingView == null || loadingView!!.visibility == View.VISIBLE
-        Log.v(LOG_TAG, "-> scrollToFirst -> isPageLoading = $isPageLoading")
 
         if (!isPageLoading) {
+
             loadingView!!.show()
             mWebview!!.loadUrl("javascript:scrollToFirst()")
             mActivityCallback!!.hideSystemUI()
+            mIsBlockToggleMenu = true
         }
     }
 
@@ -605,8 +613,12 @@ class FolioPageFragment : Fragment(),
                     loadingView!!.hide()
                 }
             }
+            if (!mIsBlockToggleMenu) {
+               mActivityCallback!!.hideSystemUI()
+            }
+            mIsBlockToggleMenu = false
+            // Log.v(LOG_TAG, "crollToFirst -> isPageLoading -> onPageFinished -> readLocator========> 1")
 
-            mActivityCallback!!.hideSystemUI()
             Log.d("length", mActivityCallback!!.currentChapterIndex.toString())
 
         }

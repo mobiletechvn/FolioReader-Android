@@ -437,7 +437,9 @@ on press back ==> Likely to destroy
 
         if (itemId == android.R.id.home) {
             Log.v(LOG_TAG, "-> onOptionsItemSelected -> drawer")
-            startContentHighlightActivity()
+            try {
+              startContentHighlightActivity()
+            } catch (e: NullPointerException) { }
             // hideSystemUI()
             return true
 
@@ -649,7 +651,6 @@ on press back ==> Likely to destroy
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        // Log.v(LOG_TAG, "-> onPostCreate")
 
         if (distractionFreeMode) {
             handler!!.post { hideSystemUI() }
@@ -802,7 +803,7 @@ on press back ==> Likely to destroy
     }
 
     override fun hideSystemUI() {
-        // Log.v(LOG_TAG, "-> hideSystemUI")
+        // Log.v(LOG_TAG, "crollToFirst -> isPageLoading-> hideSystemUI")
         if (distractionFreeMode) {
             return
         }
@@ -949,7 +950,7 @@ on press back ==> Likely to destroy
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
             override fun onPageSelected(position: Int) {
-                // Log.v(LOG_TAG, "-> onPageSelected -> DirectionalViewpager -> position = $position")
+                Log.v(LOG_TAG, "-> onPageSelected -> DirectionalViewpager -> position = $position")
 
                 EventBus.getDefault().post(
                     MediaOverlayPlayPauseEvent(
