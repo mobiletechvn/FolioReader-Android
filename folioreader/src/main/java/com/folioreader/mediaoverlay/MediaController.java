@@ -108,8 +108,8 @@ public class MediaController {
                     mTextToSpeech.setLanguage(Locale.UK);
                     mTextToSpeech.setSpeechRate(0.70f);
                 }
-
-                mTextToSpeech.setOnUtteranceCompletedListener(
+                try {
+                    mTextToSpeech.setOnUtteranceCompletedListener(
                         new TextToSpeech.OnUtteranceCompletedListener() {
                             @Override
                             public void onUtteranceCompleted(String utteranceId) {
@@ -122,7 +122,14 @@ public class MediaController {
                                     }
                                 });
                             }
-                        });
+
+                    });
+                    throw new IOException("success");
+
+                } catch (IOException e) {
+                    Log.e(TAG, e.getMessage());
+
+                }
             }
         });
     }
@@ -171,6 +178,7 @@ public class MediaController {
     }
 
     public void stateChanged(MediaOverlayPlayPauseEvent event) {
+
         if (event.isStateChanged()) {
             if (mediaPlayer != null) {
                 mediaPlayer.pause();
