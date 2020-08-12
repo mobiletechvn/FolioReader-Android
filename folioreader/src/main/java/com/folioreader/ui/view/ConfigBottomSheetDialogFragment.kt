@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.SeekBar
@@ -204,7 +205,11 @@ class ConfigBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         colorAnimation.addUpdateListener { animator ->
             val value = animator.animatedValue as Int
-            container.setBackgroundColor(value)
+            try {
+              container.setBackgroundColor(value)
+            } catch (e: Exception) {
+                // Log.e(LOG_TAG, "-> ", e)
+            }
         }
 
         colorAnimation.addListener(object : Animator.AnimatorListener {
