@@ -104,31 +104,30 @@ public class MediaController {
         mTextToSpeech = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
-                if (status != TextToSpeech.ERROR) {
-                    mTextToSpeech.setLanguage(Locale.UK);
-                    mTextToSpeech.setSpeechRate(0.70f);
-                }
-                try {
-                    mTextToSpeech.setOnUtteranceCompletedListener(
-                        new TextToSpeech.OnUtteranceCompletedListener() {
-                            @Override
-                            public void onUtteranceCompleted(String utteranceId) {
-                                ((AppCompatActivity) context).runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (mIsSpeaking) {
-                                            callbacks.highLightTTS();
+                Log.e(TAG, status + " status");
+                if(status == TextToSpeech.SUCCESS) {
+                    try {
+                        mTextToSpeech.setLanguage(Locale.UK);
+                        mTextToSpeech.setSpeechRate(0.70f);
+                        mTextToSpeech.setOnUtteranceCompletedListener(
+                            new TextToSpeech.OnUtteranceCompletedListener() {
+                                @Override
+                                public void onUtteranceCompleted(String utteranceId) {
+                                    ((AppCompatActivity) context).runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (mIsSpeaking) {
+                                                callbacks.highLightTTS();
+                                            }
                                         }
-                                    }
-                                });
-                            }
+                                    });
+                                }
 
-                    });
-                    throw new IOException("success");
+                        });
 
-                } catch (IOException e) {
-                    Log.e(TAG, e.getMessage());
-
+                    } catch (Exception e) {
+                        // Log.e(TAG, e.getMessage());
+                    }
                 }
             }
         });
@@ -137,6 +136,7 @@ public class MediaController {
     public void setUpMediaPlayer(MediaOverlays mediaOverlays, String path, String mBookTitle) {
         this.mediaOverlays = mediaOverlays;
         mediaHandler = new Handler();
+
         try {
             mediaItemPosition = 0;
             String uri = Constants.DEFAULT_STREAMER_URL + mBookTitle + path;
