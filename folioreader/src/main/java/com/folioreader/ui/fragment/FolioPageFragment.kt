@@ -515,29 +515,61 @@ class FolioPageFragment : Fragment(),
 
         override fun onPageFinished(view: WebView, url: String) {
 
-            mWebview!!.loadUrl("javascript:checkCompatMode()")
-            mWebview!!.loadUrl("javascript:alert(getReadingTime())")
+            try {
+                mWebview!!.loadUrl("javascript:checkCompatMode()")
+                mWebview!!.loadUrl("javascript:alert(getReadingTime())")
 
-            if (mActivityCallback!!.direction == Config.Direction.HORIZONTAL)
-                mWebview!!.loadUrl("javascript:initHorizontalDirection()")
+                if (mActivityCallback!!.direction == Config.Direction.HORIZONTAL)
+                    mWebview!!.loadUrl("javascript:initHorizontalDirection()")
 
-            view.loadUrl(
-                String.format(
-                    getString(R.string.setmediaoverlaystyle),
-                    HighlightImpl.HighlightStyle.classForStyle(
-                        HighlightImpl.HighlightStyle.Normal
+                view.loadUrl(
+                    String.format(
+                        getString(R.string.setmediaoverlaystyle),
+                        HighlightImpl.HighlightStyle.classForStyle(
+                            HighlightImpl.HighlightStyle.Normal
+                        )
                     )
                 )
-            )
 
-            val rangy = HighlightUtil.generateRangyString(pageName)
-            this@FolioPageFragment.rangy = rangy
-            if (!rangy.isEmpty())
-                loadRangy(rangy)
+                val rangy = HighlightUtil.generateRangyString(pageName)
+                this@FolioPageFragment.rangy = rangy
+                if (!rangy.isEmpty())
+                    loadRangy(rangy)
 
-            if (mIsPageReloaded) {
+                if (mIsPageReloaded) {
 
-                if (searchLocatorVisible != null) {
+                    if (searchLocatorVisible != null) {
+                        val callHighlightSearchLocator = String.format(
+                            getString(R.string.callHighlightSearchLocator),
+                            searchLocatorVisible?.locations?.cfi
+                        )
+                        mWebview!!.loadUrl(callHighlightSearchLocator)
+
+                    } else if (isCurrentFragment) {
+                        val cfi = lastReadLocator!!.locations.cfi
+                        mWebview!!.loadUrl(String.format(getString(R.string.callScrollToCfi), cfi))
+
+                    } else {
+                        if (spineIndex == mActivityCallback!!.currentChapterIndex - 1) {
+                            // Scroll to last, the page before current page
+                            mWebview!!.loadUrl("javascript:scrollToLast()")
+                        } else {
+                            // Make loading view invisible for all other fragments
+                            loadingView!!.hide()
+                        }
+                    }
+
+                    mIsPageReloaded = false
+
+                } else if (!TextUtils.isEmpty(mAnchorId)) {
+                    mWebview!!.loadUrl(String.format(getString(R.string.go_to_anchor), mAnchorId))
+                    mAnchorId = null
+
+                } else if (!TextUtils.isEmpty(highlightId)) {
+                    mWebview!!.loadUrl(String.format(getString(R.string.go_to_highlight), highlightId))
+                    highlightId = null
+
+                } else if (searchLocatorVisible != null) {
                     val callHighlightSearchLocator = String.format(
                         getString(R.string.callHighlightSearchLocator),
                         searchLocatorVisible?.locations?.cfi
@@ -545,10 +577,35 @@ class FolioPageFragment : Fragment(),
                     mWebview!!.loadUrl(callHighlightSearchLocator)
 
                 } else if (isCurrentFragment) {
-                    val cfi = lastReadLocator!!.locations.cfi
-                    mWebview!!.loadUrl(String.format(getString(R.string.callScrollToCfi), cfi))
+
+                    if (mActivityCallback!!.getTooltipStep().count() < 2 && mStatusTooltip!!.count() > 0) {
+                      showGuidePopup()
+                      mActivityCallback!!.setTooltipStep()
+                    }
+            
+                    // val a = mActivityCallback!!.getTooltipStatus()
+                    // mActivityCallback!!.setTooltipStatus()
+
+                    val readLocator: ReadLocator?
+                    if (savedInstanceState == null) {
+                        Log.v(LOG_TAG, "-> onPageFinished -> took from getEntryReadLocator")
+                        readLocator = mActivityCallback!!.entryReadLocator
+                    } else {
+                        Log.v(LOG_TAG, "-> onPageFinished -> took from bundle")
+                        readLocator = savedInstanceState!!.getParcelable(BUNDLE_READ_LOCATOR_CONFIG_CHANGE)
+                        savedInstanceState!!.remove(BUNDLE_READ_LOCATOR_CONFIG_CHANGE)
+                    }
+
+                    if (readLocator != null) {
+                        val cfi = readLocator.locations.cfi
+                        Log.v(LOG_TAG, "-> onPageFinished -> readLocator -> " + cfi!!)
+                        mWebview!!.loadUrl(String.format(getString(R.string.callScrollToCfi), cfi))
+                    } else {
+                        loadingView!!.hide()
+                    }
 
                 } else {
+
                     if (spineIndex == mActivityCallback!!.currentChapterIndex - 1) {
                         // Scroll to last, the page before current page
                         mWebview!!.loadUrl("javascript:scrollToLast()")
@@ -557,69 +614,17 @@ class FolioPageFragment : Fragment(),
                         loadingView!!.hide()
                     }
                 }
-
-                mIsPageReloaded = false
-
-            } else if (!TextUtils.isEmpty(mAnchorId)) {
-                mWebview!!.loadUrl(String.format(getString(R.string.go_to_anchor), mAnchorId))
-                mAnchorId = null
-
-            } else if (!TextUtils.isEmpty(highlightId)) {
-                mWebview!!.loadUrl(String.format(getString(R.string.go_to_highlight), highlightId))
-                highlightId = null
-
-            } else if (searchLocatorVisible != null) {
-                val callHighlightSearchLocator = String.format(
-                    getString(R.string.callHighlightSearchLocator),
-                    searchLocatorVisible?.locations?.cfi
-                )
-                mWebview!!.loadUrl(callHighlightSearchLocator)
-
-            } else if (isCurrentFragment) {
-
-                if (mActivityCallback!!.getTooltipStep().count() < 2 && mStatusTooltip!!.count() > 0) {
-                  showGuidePopup()
-                  mActivityCallback!!.setTooltipStep()
-                }
-        
-                // val a = mActivityCallback!!.getTooltipStatus()
-                // mActivityCallback!!.setTooltipStatus()
-
-                val readLocator: ReadLocator?
-                if (savedInstanceState == null) {
-                    Log.v(LOG_TAG, "-> onPageFinished -> took from getEntryReadLocator")
-                    readLocator = mActivityCallback!!.entryReadLocator
-                } else {
-                    Log.v(LOG_TAG, "-> onPageFinished -> took from bundle")
-                    readLocator = savedInstanceState!!.getParcelable(BUNDLE_READ_LOCATOR_CONFIG_CHANGE)
-                    savedInstanceState!!.remove(BUNDLE_READ_LOCATOR_CONFIG_CHANGE)
-                }
-
-                if (readLocator != null) {
-                    val cfi = readLocator.locations.cfi
-                    Log.v(LOG_TAG, "-> onPageFinished -> readLocator -> " + cfi!!)
-                    mWebview!!.loadUrl(String.format(getString(R.string.callScrollToCfi), cfi))
-                } else {
-                    loadingView!!.hide()
-                }
-
-            } else {
-
-                if (spineIndex == mActivityCallback!!.currentChapterIndex - 1) {
-                    // Scroll to last, the page before current page
-                    mWebview!!.loadUrl("javascript:scrollToLast()")
-                } else {
-                    // Make loading view invisible for all other fragments
-                    loadingView!!.hide()
-                }
+                if (!mIsBlockToggleMenu) {
+                   mActivityCallback!!.hideSystemUI()
+                } 
+            } catch (e: Exception) {
+                Log.e(LOG_TAG, "shouldInterceptRequest failed", e)
             }
-            if (!mIsBlockToggleMenu) {
-               mActivityCallback!!.hideSystemUI()
-            }
+
             mIsBlockToggleMenu = false
             // Log.v(LOG_TAG, "crollToFirst -> isPageLoading -> onPageFinished -> readLocator========> 1")
 
-            Log.d("length", mActivityCallback!!.currentChapterIndex.toString())
+            // Log.d("length", mActivityCallback!!.currentChapterIndex.toString())
 
         }
 
