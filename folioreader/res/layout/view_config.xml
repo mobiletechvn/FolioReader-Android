@@ -14,7 +14,7 @@
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toStartOf="@+id/view_config_ib_night_mode"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/icon_sun_sel" />
+        app:srcCompat="@drawable/ic_day_grey" />
 
     <ImageButton
         android:id="@+id/view_config_ib_night_mode"
@@ -23,7 +23,7 @@
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/view_config_ib_day_mode"
-        app:srcCompat="@drawable/icon_moon_sel" />
+        app:srcCompat="@drawable/ic_night_grey" />
 
     <View
         android:id="@+id/view3"
