@@ -41,6 +41,7 @@ class ConfigBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var config: Config
     private var isNightMode = false
+    private var progressValue = 0
     private lateinit var activityCallback: FolioActivityCallback
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -265,14 +266,14 @@ class ConfigBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         view_config_font_size_seek_bar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                config.fontSize = progress
+                progressValue = progress
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                config.fontSize = progressValue
                 AppUtil.saveConfig(activity, config)
                 EventBus.getDefault().post(ReloadDataEvent())
             }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) {}
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
     }
 
