@@ -6,6 +6,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.util.Log;
 
 /**
  * Created by Mahavir on 3/10/17.
@@ -67,6 +68,7 @@ public class TOCLinkWrapper implements MultiLevelExpIndListAdapter.ExpIndData {
 
     @Override
     public List<? extends MultiLevelExpIndListAdapter.ExpIndData> getChildren() {
+
         return tocLinkWrappers;
     }
 

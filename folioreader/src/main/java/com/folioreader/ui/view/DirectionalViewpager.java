@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import android.os.Handler;
 
 public class DirectionalViewpager extends ViewGroup {
     private static final String TAG = "ViewPager";
@@ -52,6 +53,7 @@ public class DirectionalViewpager extends ViewGroup {
     private static final int DEFAULT_GUTTER_SIZE = 16; // dips
 
     private static final int MIN_FLING_VELOCITY = 400; // dips
+    private Handler handler;
 
     private static final int[] LAYOUT_ATTRS = new int[]{
             android.R.attr.layout_gravity
@@ -126,6 +128,7 @@ public class DirectionalViewpager extends ViewGroup {
     private boolean mInLayout;
 
     private boolean mScrollingCacheEnabled;
+    private boolean mBlockScroll = true;
 
     private boolean mPopulatePending;
     private int mOffscreenPageLimit = DEFAULT_OFFSCREEN_PAGES;
@@ -217,6 +220,13 @@ public class DirectionalViewpager extends ViewGroup {
             populate();
         }
     };
+
+    private final Runnable setBlock = new Runnable() {
+        public void run() {
+            mBlockScroll = false;
+        }
+    };
+
 
     private int mScrollState = SCROLL_STATE_IDLE;
 
@@ -333,9 +343,10 @@ public class DirectionalViewpager extends ViewGroup {
         initViewPager();
     }
 
+
     @SuppressWarnings("PMD.UnnecessaryFullyQualifiedName")
     void initViewPager() {
-        setWillNotDraw(false);
+        new Handler().postDelayed(setBlock, 1500);
         setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
         setFocusable(true);
         final Context context = getContext();
@@ -361,6 +372,7 @@ public class DirectionalViewpager extends ViewGroup {
                 == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
             ViewCompat.setImportantForAccessibility(this,
                     ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(this,
@@ -411,6 +423,8 @@ public class DirectionalViewpager extends ViewGroup {
                         // Now return a new WindowInsets, using the consumed window insets
                         return applied.replaceSystemWindowInsets(
                                 res.left, res.top, res.right, res.bottom);
+
+
                     }
                 });
     }
@@ -487,6 +501,7 @@ public class DirectionalViewpager extends ViewGroup {
         if (mAdapterChangeListener != null && oldAdapter != adapter) {
             mAdapterChangeListener.onAdapterChanged(oldAdapter, adapter);
         }
+
     }
 
     private void removeNonDecorViews() {
@@ -1056,6 +1071,7 @@ public class DirectionalViewpager extends ViewGroup {
         }
 
         if (isUpdating) {
+
             mAdapter.finishUpdate(this);
         }
 
@@ -1856,9 +1872,11 @@ public class DirectionalViewpager extends ViewGroup {
         if (isHorizontal()) {
             if (oldWidth > 0 && !mItems.isEmpty()) {
                 if (!mScroller.isFinished()) {
+
                     mScroller.setFinalX(
                             getCurrentItem() * getClientWidth());
                 } else {
+
                     final int widthWithMargin
                             = width - getPaddingLeft() - getPaddingRight() + margin;
                     final int oldWidthWithMargin
@@ -2063,7 +2081,9 @@ public class DirectionalViewpager extends ViewGroup {
     @Override
     public void computeScroll() {
         mIsScrollStarted = true;
+
         if (!mScroller.isFinished() && mScroller.computeScrollOffset()) {
+
             int oldX = getScrollX();
             int oldY = getScrollY();
             int x = mScroller.getCurrX();
@@ -2094,7 +2114,9 @@ public class DirectionalViewpager extends ViewGroup {
     }
 
     private boolean pageScrolled(int xpos, int ypos) {
+
         if (mItems.size() == 0) {
+
             if (mFirstLayout) {
                 // If we haven't been laid out yet, we probably just haven't been populated yet.
                 // Let's skip this call since it doesn't make sense in this state
@@ -2154,6 +2176,7 @@ public class DirectionalViewpager extends ViewGroup {
     @CallSuper
     protected void onPageScrolled(int position, float offset, int offsetPixels) {
         // Offset any decor views if needed - keep them on-screen at all times.
+
         if (isHorizontal()) {
             if (mDecorChildCount > 0) {
                 final int scrollX = getScrollX();
@@ -2634,8 +2657,14 @@ public class DirectionalViewpager extends ViewGroup {
         return mIsBeingDragged;
     }
 
+
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+
+        if (mBlockScroll) {
+            return false;
+        }
         if (mFakeDragging) {
             // A fake drag is in progress already, ignore this real one
             // but still eat the touch events.
@@ -3257,6 +3286,8 @@ public class DirectionalViewpager extends ViewGroup {
      * @see #endFakeDrag()
      */
     public boolean beginFakeDrag() {
+                                Log.v(TAG, "111122222 fake");
+
         if (mIsBeingDragged) {
             return false;
         }
@@ -3287,6 +3318,8 @@ public class DirectionalViewpager extends ViewGroup {
      * @see #endFakeDrag()
      */
     public void endFakeDrag() {
+                                Log.v(TAG, "111122222 endfake");
+
         if (!mFakeDragging) {
             throw new IllegalStateException("No fake drag in progress. Call beginFakeDrag first.");
         }

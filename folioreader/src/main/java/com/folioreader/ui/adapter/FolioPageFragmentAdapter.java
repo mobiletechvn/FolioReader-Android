@@ -24,20 +24,20 @@ public class FolioPageFragmentAdapter extends FragmentStatePagerAdapter {
     private String mEpubFileName;
     private String mBookId;
     private String mLink;
+    private String mEnableChap;
     private String mStatusTooltip;
     private ArrayList<Fragment> fragments;
     private ArrayList<Fragment.SavedState> savedStateList;
 
     public FolioPageFragmentAdapter(FragmentManager fragmentManager, List<Link> spineReferences,
-                                    String epubFileName, String bookId, String link, String statusTooltip) {
+                                    String epubFileName, String bookId, String link, String statusTooltip, String enableChap) {
         super(fragmentManager);
-        Log.d("----->", statusTooltip);
-        Log.d("----- epubFileName >", epubFileName);
 
         this.mSpineReferences = spineReferences;
         this.mEpubFileName = epubFileName;
         this.mBookId = bookId;
         this.mLink = link;
+        this.mEnableChap = enableChap;
         this.mStatusTooltip = statusTooltip;
         fragments = new ArrayList<>(Arrays.asList(new Fragment[mSpineReferences.size()]));
     }
@@ -58,14 +58,13 @@ public class FolioPageFragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-
         if (mSpineReferences.size() == 0 || position < 0 || position >= mSpineReferences.size())
             return null;
 
         Fragment fragment = fragments.get(position);
         if (fragment == null) {
             fragment = FolioPageFragment.newInstance(position,
-                    mEpubFileName, mSpineReferences.get(position), mBookId, mLink, mStatusTooltip);
+                    mEpubFileName, mSpineReferences.get(position), mBookId, mLink, mStatusTooltip, mEnableChap);
             fragments.set(position, fragment);
         }
         return fragment;

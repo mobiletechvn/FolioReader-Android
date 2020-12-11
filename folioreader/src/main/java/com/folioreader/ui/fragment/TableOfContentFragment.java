@@ -22,11 +22,14 @@ import org.readium.r2.shared.Link;
 import org.readium.r2.shared.Publication;
 import com.folioreader.FolioReader;
 import android.util.Log;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.folioreader.Constants.*;
+import static java.util.Collections.replaceAll;
 
 public class TableOfContentFragment extends Fragment implements TOCAdapter.TOCCallback {
     private TOCAdapter mTOCAdapter;
@@ -34,17 +37,20 @@ public class TableOfContentFragment extends Fragment implements TOCAdapter.TOCCa
     private TextView errorView;
     private Config mConfig;
     private String mBookTitle;
+    static String mChapEnable;
     private Publication publication;
 
     public static TableOfContentFragment newInstance(Publication publication,
-                                                     String selectedChapterHref, String bookTitle, String bookLink) {
+                                                     String selectedChapterHref, String bookTitle, String bookLink, String enableChap) {
         TableOfContentFragment tableOfContentFragment = new TableOfContentFragment();
         Bundle args = new Bundle();
         args.putSerializable(PUBLICATION, publication);
         args.putString(SELECTED_CHAPTER_POSITION, selectedChapterHref);
         args.putString(BOOK_TITLE, bookTitle);
         args.putString(FolioReader.EXTRA_LINK, bookLink);
+        args.putString(FolioReader.EXTRA_CHAP_ENABLE, enableChap);
         tableOfContentFragment.setArguments(args);
+        mChapEnable = enableChap;
         return tableOfContentFragment;
     }
 
@@ -57,9 +63,11 @@ public class TableOfContentFragment extends Fragment implements TOCAdapter.TOCCa
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         View mRootView = inflater.inflate(R.layout.fragment_contents, container, false);
         mConfig = AppUtil.getSavedConfig(getActivity());
         mBookTitle = getArguments().getString(BOOK_TITLE);
+
         if (mConfig.isNightMode()) {
             mRootView.findViewById(R.id.recycler_view_menu).
                     setBackgroundColor(ContextCompat.getColor(getActivity(),
@@ -111,9 +119,13 @@ public class TableOfContentFragment extends Fragment implements TOCAdapter.TOCCa
      * @return generated {@link TOCLinkWrapper} list
      */
     private static TOCLinkWrapper createTocLinkWrapper(Link tocLink, int indentation) {
+
         TOCLinkWrapper tocLinkWrapper = new TOCLinkWrapper(tocLink, indentation);
+
         for (Link tocLink1 : tocLink.getChildren()) {
+
             TOCLinkWrapper tocLinkWrapper1 = createTocLinkWrapper(tocLink1, indentation + 1);
+
             if (tocLinkWrapper1.getIndentation() != 3) {
                 tocLinkWrapper.addChild(tocLinkWrapper1);
             }
@@ -122,6 +134,7 @@ public class TableOfContentFragment extends Fragment implements TOCAdapter.TOCCa
     }
 
     private static ArrayList<TOCLinkWrapper> createTOCFromSpine(List<Link> spine) {
+
         ArrayList<TOCLinkWrapper> tocLinkWrappers = new ArrayList<>();
         for (Link link : spine) {
             Link tocLink = new Link();
@@ -133,9 +146,11 @@ public class TableOfContentFragment extends Fragment implements TOCAdapter.TOCCa
     }
 
     public void onLoadTOC(ArrayList<TOCLinkWrapper> tocLinkWrapperList) {
+
         mTOCAdapter = new TOCAdapter(getActivity(), tocLinkWrapperList,
                 getArguments().getString(SELECTED_CHAPTER_POSITION), mConfig);
         mTOCAdapter.setCallback(this);
+        mTOCAdapter.setTitleEnable(mChapEnable);
         mTableOfContentsRecyclerView.setAdapter(mTOCAdapter);
     }
 
@@ -147,18 +162,43 @@ public class TableOfContentFragment extends Fragment implements TOCAdapter.TOCCa
 
     @Override
     public void onTocClicked(int position) {
-        
         TOCLinkWrapper tocLinkWrapper = (TOCLinkWrapper) mTOCAdapter.getItemAt(position);
         Intent intent = new Intent();
-        intent.putExtra(SELECTED_CHAPTER_POSITION, tocLinkWrapper.getTocLink().getHref());
-        intent.putExtra(BOOK_TITLE, tocLinkWrapper.getTocLink().getTitle());
-        intent.putExtra(TYPE, CHAPTER_SELECTED);
-        getActivity().setResult(Activity.RESULT_OK, intent);
-        getActivity().finish();
+        String href = tocLinkWrapper.getTocLink().getHref();
+
+        href = href.replaceAll(("[^0-9 ]"), "");
+        String title = tocLinkWrapper.getTocLink().getTitle();
+        String chapEnable = mChapEnable.replaceAll(("[^0-9 ]"), "");
+
+        try {
+            if (Integer.valueOf(href) > Integer.valueOf(chapEnable)) {
+                showRemindReading(title);
+            } else {
+                intent.putExtra(SELECTED_CHAPTER_POSITION, tocLinkWrapper.getTocLink().getHref());
+                intent.putExtra(BOOK_TITLE, title);
+                intent.putExtra(TYPE, CHAPTER_SELECTED);
+                getActivity().setResult(Activity.RESULT_OK, intent);
+                getActivity().finish();
+            }
+
+        } catch (Exception e) {
+
+        }
+
+        
+    }
+
+    public void showRemindReading(String title) {
+        new AlertDialog.Builder(getActivity())
+            .setTitle("")
+            .setMessage("Bạn vui lòng đọc từ chương " + mTOCAdapter.getTitleEnable() + " theo qui định sách bản quyền.")
+            .setNegativeButton("Đồng ý", null)
+            .show();
     }
 
     @Override
     public void onExpanded(int position) {
+
         TOCLinkWrapper tocLinkWrapper = (TOCLinkWrapper) mTOCAdapter.getItemAt(position);
         if (tocLinkWrapper.getChildren() != null && tocLinkWrapper.getChildren().size() > 0) {
             mTOCAdapter.toggleGroup(position);

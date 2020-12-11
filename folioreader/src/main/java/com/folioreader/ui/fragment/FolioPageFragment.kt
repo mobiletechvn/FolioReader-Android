@@ -55,6 +55,7 @@ import android.app.AlertDialog;
 import android.widget.Toast
 import android.content.DialogInterface
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.login.*
 import kotlinx.android.synthetic.main.tooltip_second.*
@@ -64,7 +65,18 @@ import android.view.Gravity;
 import android.view.ViewGroup.LayoutParams
 import com.folioreader.ui.view.ConfigBottomSheetDialogFragment
 // import android.support.v4.app.FragmentManager;
- import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import com.folioreader.Constants
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Timer
+import kotlin.concurrent.schedule
+
+
+
 /**
  * Created by mahavir on 4/2/16.
  */
@@ -83,7 +95,7 @@ class FolioPageFragment : Fragment(),
         const val BUNDLE_SEARCH_LOCATOR = "BUNDLE_SEARCH_LOCATOR"
 
         @JvmStatic
-        fun newInstance(spineIndex: Int, bookTitle: String, spineRef: Link, bookId: String, link: String, statusTooltip: String): FolioPageFragment {
+        fun newInstance(spineIndex: Int, bookTitle: String, spineRef: Link, bookId: String, link: String, statusTooltip: String, enableChap: String): FolioPageFragment {
             val fragment = FolioPageFragment()
             val args = Bundle()
             args.putInt(BUNDLE_SPINE_INDEX, spineIndex)
@@ -93,6 +105,7 @@ class FolioPageFragment : Fragment(),
             args.putString(FolioReader.EXTRA_LINK, link)
             args.putString(FolioReader.EXTRA_STATUS_TOOLTIP, statusTooltip)
             args.putSerializable(BUNDLE_SPINE_ITEM, spineRef)
+            args.putString(FolioReader.EXTRA_CHAP_ENABLE, enableChap)
             fragment.arguments = args
             return fragment
         }
@@ -121,6 +134,7 @@ class FolioPageFragment : Fragment(),
     private var mActivityCallback: FolioActivityCallback? = null
 
     private var mTotalMinutes: Int = 0
+    var positonXBlockFrag: Int = 0
     private var mFadeInAnimation: Animation? = null
     private var mFadeOutAnimation: Animation? = null
 
@@ -128,10 +142,14 @@ class FolioPageFragment : Fragment(),
     private var spineIndex = -1
     private var mBookTitle: String? = null
     private var mIsPageReloaded: Boolean = false
-    private var mIsShowRemindPurchase: Boolean = false
+    var mIsShowRemindPurchase: Boolean = false
     private var mIsBlockToggleMenu: Boolean = false
     private var popupShowed: Boolean = false
     private var test: Boolean = false
+    var isFinishChapToday: Boolean = false
+    var isNavigate: Boolean = false
+    var shouldBlock: Boolean = false
+    var isHorizontal: Boolean = true
 
     private var highlightStyle: String? = null
 
@@ -139,8 +157,15 @@ class FolioPageFragment : Fragment(),
     private var mConfig: Config? = null
     private var mBookId: String? = null
     private var mLink: String? = null
+    private var mEnableChap: String? = null
     private var mStatusTooltip: String? = null
     var searchLocatorVisible: SearchLocator? = null
+
+    var horizonX: Int = 0
+    var horizonY: Int = 0
+    var vertiX: Int = 0
+    var vertiY: Int = 0
+    var scrollHeight: Int = 0
 
     private lateinit var chapterUrl: Uri
 
@@ -156,7 +181,8 @@ class FolioPageFragment : Fragment(),
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-
+        shouldBlock = false
+        isNavigate = false
         this.savedInstanceState = savedInstanceState
         uiHandler = Handler()
 
@@ -172,8 +198,8 @@ class FolioPageFragment : Fragment(),
         spineItem = arguments!!.getSerializable(BUNDLE_SPINE_ITEM) as Link
         mBookId = arguments!!.getString(FolioReader.EXTRA_BOOK_ID)
         mLink = arguments!!.getString(FolioReader.EXTRA_LINK)
+        mEnableChap = arguments!!.getString(FolioReader.EXTRA_CHAP_ENABLE)
         mStatusTooltip = arguments!!.getString(FolioReader.EXTRA_STATUS_TOOLTIP)
-
         chapterUrl = Uri.parse(mActivityCallback?.streamerUrl + spineItem.href!!.substring(1))
 
         searchLocatorVisible = savedInstanceState?.getParcelable(BUNDLE_SEARCH_LOCATOR)
@@ -265,6 +291,7 @@ class FolioPageFragment : Fragment(),
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun reload(reloadDataEvent: ReloadDataEvent) {
+        isNavigate = false
 
         if (isCurrentFragment)
             load()
@@ -358,18 +385,6 @@ class FolioPageFragment : Fragment(),
 
     fun scrollToLast() {
         val isPageLoading = loadingView == null || loadingView!!.visibility == View.VISIBLE
-        try {
-            // deprecated
-            // val pageIndex = mActivityCallback!!.currentChapterIndex
-            // Log.v(LOG_TAG, "-> pageIndex count -> ${pageIndex}")
-            // if (pageIndex == 2 && !mIsShowRemindPurchase && mLink!!.length > 0) {
-            //   mIsShowRemindPurchase = true
-            //   showRemindPurchase()
-            // }
-        } catch (e: Exception) {
-            Log.e(LOG_TAG, "shouldInterceptRequest failed", e)
-        }
-        
         if (!isPageLoading) {
             loadingView!!.show()
             mWebview!!.loadUrl("javascript:scrollToLast()")
@@ -377,6 +392,10 @@ class FolioPageFragment : Fragment(),
     }
 
     fun showRemindPurchase(isLastPage:Boolean = false ) {
+            if (mLink?.length!! < 1) {
+                return
+            }
+            mIsShowRemindPurchase = true
             val dialogBuilder = AlertDialog.Builder(getActivity())
             var message = "Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!";
             if (isLastPage) {
@@ -391,11 +410,14 @@ class FolioPageFragment : Fragment(),
                         openURL.data = Uri.parse(mLink)
                         startActivity(openURL)
                         dialog.dismiss()
+                        mIsShowRemindPurchase = false
                     })
                     .setNegativeButton("Để sau", DialogInterface.OnClickListener {
                         dialog, id ->
                         dialog.dismiss()
-                        mActivityCallback!!.hideSystemUI()
+                        mIsShowRemindPurchase = false
+                        scrollToAnchorId("href/OEBPS/Text/cover.xhtml")
+
 
                     })
             val alert = dialogBuilder.create()
@@ -403,6 +425,52 @@ class FolioPageFragment : Fragment(),
 
             alert.setTitle("")
             alert.show()
+            
+    }
+
+
+    fun showRemindReading() {
+        uiHandler.post {
+
+        val datePlusOneMonth = Calendar.getInstance().run {
+            add(Calendar.MONTH, 1)
+            time
+        }
+        val current = (LocalDateTime.now()).plusDays(1)
+
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val formatted = current.format(formatter)
+
+        val dialogBuilder = AlertDialog.Builder(getActivity())
+        var message = "Mời bạn đọc phần tiếp theo vào ngày " + formatted;
+
+        dialogBuilder.setMessage(message)
+                // if the dialog is cancelable
+                .setCancelable(true)
+                 .setNegativeButton("Đồng ý", DialogInterface.OnClickListener {
+                    dialog, id ->
+                    mActivityCallback!!.hideSystemUI()
+                    dialog.dismiss()
+                        Timer("SettingUp", false).schedule(2500) { 
+                           mIsShowRemindPurchase = false
+                        }
+                })
+
+        val alert = dialogBuilder.create()
+        alert.setOnCancelListener {  func -> Timer("SettingUp", false).schedule(2500) { 
+                           mIsShowRemindPurchase = false
+                           mActivityCallback!!.hideSystemUI()
+                        } 
+                    }
+
+        alert.setTitle("")
+        if (!mIsShowRemindPurchase) {
+            mIsShowRemindPurchase = true
+                        Log.v(LOG_TAG, "-> ===show")
+            alert.show()
+                
+            }
+        }
     }
 
     fun showGuidePopup() {
@@ -456,9 +524,7 @@ class FolioPageFragment : Fragment(),
 
     fun scrollToFirst() {
         val isPageLoading = loadingView == null || loadingView!!.visibility == View.VISIBLE
-
         if (!isPageLoading) {
-
             loadingView!!.show()
             mWebview!!.loadUrl("javascript:scrollToFirst()")
             mActivityCallback!!.hideSystemUI()
@@ -498,8 +564,26 @@ class FolioPageFragment : Fragment(),
 
         mWebview!!.setScrollListener(object : FolioWebView.ScrollListener {
             override fun onScrollChange(percent: Int) {
+    
+                var href = spineItem.href
+                val regrex = Regex("[^1-9 ]")
+                href = href?.replace(regrex, "")
+                var chapEnable = mEnableChap?.replace(regrex, "")
 
-                mScrollSeekbar!!.setProgressAndThumb(percent)
+                try {
+                    if (Integer.valueOf(href) == Integer.valueOf(chapEnable)) {
+                        isFinishChapToday = true
+                    }
+
+                    if (Integer.valueOf(href) > Integer.valueOf(chapEnable)) {
+                        shouldBlock = true
+                    } else {
+                        shouldBlock = false
+                    }
+                } catch (e: Exception) {
+                    Log.e(LOG_TAG, "->====== ", e)
+                }
+                // mScrollSeekbar!!.setProgressAndThumb(percent)
                 updatePagesLeftText(percent)
             }
         })
@@ -512,15 +596,18 @@ class FolioPageFragment : Fragment(),
     }
 
     private val webViewClient = object : WebViewClient() {
-
         override fun onPageFinished(view: WebView, url: String) {
 
             try {
                 mWebview!!.loadUrl("javascript:checkCompatMode()")
                 mWebview!!.loadUrl("javascript:alert(getReadingTime())")
 
-                if (mActivityCallback!!.direction == Config.Direction.HORIZONTAL)
+                if (mActivityCallback!!.direction == Config.Direction.HORIZONTAL) {
+                    isHorizontal = true
                     mWebview!!.loadUrl("javascript:initHorizontalDirection()")
+                } else {
+                    isHorizontal = false
+                }
 
                 view.loadUrl(
                     String.format(
@@ -777,6 +864,23 @@ class FolioPageFragment : Fragment(),
         mWebview!!.setHorizontalPageCount(horizontalPageCount)
     }
 
+    fun goToEnableChap() {
+        // mActivityCallback!!.goToChapter("")
+        if (!isNavigate) {
+            activity!!.runOnUiThread{ mActivityCallback!!.goToChapter("") }
+            isNavigate = true
+        }
+
+        
+    }
+
+    fun hiddenSystemUI() {
+        Log.v(
+            LOG_TAG, "-> hiddeeeee"
+        )
+        mActivityCallback!!.hideSystemUI()
+    }
+
     fun loadRangy(rangy: String) {
         mWebview!!.loadUrl(
             String.format(
@@ -804,7 +908,6 @@ class FolioPageFragment : Fragment(),
     }
 
     private fun updatePagesLeftTextBg() {
-
         if (mConfig!!.isNightMode) {
             mRootView!!.findViewById<View>(R.id.indicatorLayout)
                 .setBackgroundColor(Color.parseColor("#131313"))

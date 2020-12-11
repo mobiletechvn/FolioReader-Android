@@ -104,6 +104,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
     private var mBookId: String? = null
     private var mLink: String? = null
+    private var mEnableChap: String? = null
     private var mStatusTooltip: String? = null
     private var statusTooltip: String? = ""
     private var mEpubFilePath: String? = null
@@ -302,6 +303,7 @@ on press back ==> Likely to destroy
 
         mBookId = intent!!.getStringExtra(FolioReader.EXTRA_BOOK_ID)
         mLink = intent!!.getStringExtra(FolioReader.EXTRA_LINK)
+        mEnableChap = intent!!.getStringExtra(FolioReader.EXTRA_CHAP_ENABLE)
         mStatusTooltip = intent!!.getStringExtra(FolioReader.EXTRA_STATUS_TOOLTIP)
 
         mEpubSourceType = intent!!.extras!!.getSerializable(FolioActivity.INTENT_EPUB_SOURCE_TYPE) as EpubSourceType
@@ -431,7 +433,7 @@ on press back ==> Likely to destroy
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        //Log.d(LOG_TAG, "-> onOptionsItemSelected -> " + item.getItemId());
+        Log.d(LOG_TAG, "-> onOptionsItemSelected -> " + item.getItemId());
 
         val itemId = item.itemId
 
@@ -486,6 +488,7 @@ on press back ==> Likely to destroy
 
         intent.putExtra(FolioReader.EXTRA_BOOK_ID, mBookId)
         intent.putExtra(FolioReader.EXTRA_LINK, mLink)
+        intent.putExtra(FolioReader.EXTRA_CHAP_ENABLE, mEnableChap)
         intent.putExtra(Constants.BOOK_TITLE, bookFileName)
         startActivityForResult(intent, RequestCode.CONTENT_HIGHLIGHT.value)
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up)
@@ -626,7 +629,7 @@ on press back ==> Likely to destroy
         mFolioPageViewPager!!.setDirection(newDirection)
         mFolioPageFragmentAdapter = FolioPageFragmentAdapter(
             supportFragmentManager,
-            spine, bookFileName, mBookId, mLink, mStatusTooltip
+            spine, bookFileName, mBookId, mLink, mStatusTooltip, mEnableChap
         )
         mFolioPageViewPager!!.adapter = mFolioPageFragmentAdapter
         mFolioPageViewPager!!.currentItem = currentChapterIndex
@@ -950,7 +953,7 @@ on press back ==> Likely to destroy
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
             override fun onPageSelected(position: Int) {
-                Log.v(LOG_TAG, "-> onPageSelected -> DirectionalViewpager -> position = $position")
+                // Log.v(LOG_TAG, "-> onPageSelected -> DirectionalViewpager -> position = $position")
 
                 EventBus.getDefault().post(
                     MediaOverlayPlayPauseEvent(
@@ -965,10 +968,10 @@ on press back ==> Likely to destroy
 
                 if (state == DirectionalViewpager.SCROLL_STATE_IDLE) {
                     val position = mFolioPageViewPager!!.currentItem
-                    Log.v(
-                        LOG_TAG, "-> onPageScrollStateChanged -> DirectionalViewpager -> " +
-                                "position = " + position
-                    )
+                    // Log.v(
+                    //     LOG_TAG, "-> onPageScrollStateChanged -> DirectionalViewpager -> " +
+                    //             "position = " + position
+                    // )
 
                     var folioPageFragment = mFolioPageFragmentAdapter!!.getItem(position - 1) as FolioPageFragment?
                     if (folioPageFragment != null) {
@@ -1013,7 +1016,7 @@ on press back ==> Likely to destroy
         mFolioPageViewPager!!.setDirection(direction)
         mFolioPageFragmentAdapter = FolioPageFragmentAdapter(
             supportFragmentManager,
-            spine, bookFileName, mBookId, mLink, mStatusTooltip
+            spine, bookFileName, mBookId, mLink, mStatusTooltip, mEnableChap
         )
         mFolioPageViewPager!!.adapter = mFolioPageFragmentAdapter
 

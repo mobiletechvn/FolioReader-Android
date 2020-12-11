@@ -39,6 +39,7 @@ public class FolioReader {
     public static final String EXTRA_BOOK_ID = "com.folioreader.extra.BOOK_ID";
     public static final String EXTRA_BOOK_ID2 = "com.folioreader.extra.BOOK_ID2";
     public static final String EXTRA_LINK = "com.folioreader.extra.LINK";
+    public static final String EXTRA_CHAP_ENABLE = "com.folioreader.extra.CHAP_ENABLE";
     public static final String EXTRA_STATUS_TOOLTIP = "com.folioreader.extra.STATUS_TOOLTIP";
     public static final String EXTRA_READ_LOCATOR = "com.folioreader.extra.READ_LOCATOR";
     public static final String EXTRA_PORT_NUMBER = "com.folioreader.extra.PORT_NUMBER";
@@ -57,6 +58,7 @@ public class FolioReader {
     private ReaderCloseListener readerCloseListener;
     private ReadLocator readLocator;
     private String link;
+    private String enableChap;
     private String statusTooltip;
 
     @Nullable
@@ -186,6 +188,7 @@ public class FolioReader {
         intent.putExtra(EXTRA_PORT_NUMBER, portNumber);
         intent.putExtra(FolioActivity.EXTRA_READ_LOCATOR, (Parcelable) readLocator);
         intent.putExtra(EXTRA_LINK, this.link);
+        intent.putExtra(EXTRA_CHAP_ENABLE, this.enableChap);
         intent.putExtra(EXTRA_STATUS_TOOLTIP, this.statusTooltip);
 
         if (rawId != 0) {
@@ -277,6 +280,11 @@ public class FolioReader {
 
     public FolioReader setLinkPurchase(String linkPurchase) {
         this.link = linkPurchase;
+        return singleton;
+    }
+
+    public FolioReader setChapEnable(String enableChap) {
+        this.enableChap = enableChap;
         return singleton;
     }
 
