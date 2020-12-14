@@ -41,7 +41,18 @@ import kotlinx.android.synthetic.main.text_selection.view.*
 import org.json.JSONObject
 import org.springframework.util.ReflectionUtils
 import java.lang.ref.WeakReference
+import android.app.AlertDialog;
+import android.widget.ImageView
+import java.util.Calendar;
+import java.util.Date;
+import java.time.LocalDateTime
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Timer
+import kotlin.concurrent.schedule
+import android.content.DialogInterface
+import java.text.SimpleDateFormat;
 /**
  * @author by mahavir on 3/31/16.
  */
@@ -100,11 +111,14 @@ class FolioWebView : WebView {
     private lateinit var viewTextSelection: View
     private var isScrollingCheckDuration: Int = 0
     private var isScrollingRunnable: Runnable? = null
-    private var oldScrollX: Int = 0
+    var oldScrollX: Int = 0
     private var oldScrollY: Int = 0
     private var lastTouchAction: Int = 0
     private var destroyed: Boolean = false
+    private var mIsShowRemindPurchase: Boolean = false
+     var isUp: Boolean = true
     private var handleHeight: Int = 0
+    var a: Int = 0
 
     private var lastScrollType: LastScrollType? = null
 
@@ -158,6 +172,7 @@ class FolioWebView : WebView {
     private inner class HorizontalGestureListener : GestureDetector.SimpleOnGestureListener() {
 
         override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
+
             //Log.d(LOG_TAG, "-> onScroll -> e1 = " + e1 + ", e2 = " + e2 + ", distanceX = " + distanceX + ", distanceY = " + distanceY);
             lastScrollType = LastScrollType.USER
             return false
@@ -182,7 +197,6 @@ class FolioWebView : WebView {
 
         override fun onDown(event: MotionEvent?): Boolean {
             //Log.v(LOG_TAG, "-> onDown -> " + event.toString());
-
             eventActionDown = MotionEvent.obtain(event)
             super@FolioWebView.onTouchEvent(event)
             return true
@@ -214,13 +228,14 @@ class FolioWebView : WebView {
     private inner class VerticalGestureListener : GestureDetector.SimpleOnGestureListener() {
 
         override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
-            //Log.v(LOG_TAG, "-> onScroll -> e1 = " + e1 + ", e2 = " + e2 + ", distanceX = " + distanceX + ", distanceY = " + distanceY);
+            Log.v(LOG_TAG, "-> onScroll -> e1 = " + e1?.getX());
+            Log.v(LOG_TAG, "-> onScroll -> e1 = " + e2?.getY());
             lastScrollType = LastScrollType.USER
             return false
         }
 
         override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
-            //Log.v(LOG_TAG, "-> onFling -> e1 = " + e1 + ", e2 = " + e2 + ", velocityX = " + velocityX + ", velocityY = " + velocityY);
+            // Log.v(LOG_TAG, "-> onFling -> e1 = " + e1 + ", e2 = " + e2 + ", velocityX = " + velocityX + ", velocityY = " + velocityY);
             lastScrollType = LastScrollType.USER
             return false
         }
@@ -379,6 +394,8 @@ class FolioWebView : WebView {
 
         pageWidthCssDp = Math.ceil((measuredWidth / density).toDouble()).toInt()
         pageWidthCssPixels = pageWidthCssDp * density
+        Log.v(LOG_TAG, "-> onTouchEvent -> " + pageWidthCssPixels)
+
     }
 
     fun setScrollListener(listener: ScrollListener) {
@@ -443,17 +460,91 @@ class FolioWebView : WebView {
 
     override fun scrollTo(x: Int, y: Int) {
         super.scrollTo(x, y)
-        //Log.d(LOG_TAG, "-> scrollTo -> x = " + x);
         lastScrollType = LastScrollType.PROGRAMMATIC
+
+    }
+
+    fun showRemindReading() {
+       if (!mIsShowRemindPurchase) {
+           val datePlusOneMonth = Calendar.getInstance().run {
+               add(Calendar.DATE, 1)
+               time
+           }
+
+           val sdf = SimpleDateFormat("dd/M/yyyy")
+           val currentDate = sdf.format(datePlusOneMonth)
+
+           val dialogBuilder = AlertDialog.Builder(context)
+           var message = "Mời bạn đọc phần tiếp theo vào ngày " + currentDate.toString();
+
+           dialogBuilder.setMessage(message)
+                   // if the dialog is cancelable
+                   .setCancelable(true)
+                    .setNegativeButton("Đồng ý", DialogInterface.OnClickListener {
+                       dialog, id ->
+                       dialog.dismiss()
+                       Timer("SettingUp", false).schedule(2500) {
+                          mIsShowRemindPurchase = false
+                       }
+                       if (parentFragment.shouldBlock) {
+                          parentFragment.goToEnableChap()
+                       } else {
+                          parentFragment!!.hiddenSystemUI()
+                       }
+                   })
+
+           val alert = dialogBuilder.create()
+           alert.setOnCancelListener {  func ->
+                   Timer("SettingUp", false).schedule(2500) {
+                      mIsShowRemindPurchase = false
+                   }
+                   if (parentFragment.shouldBlock) {
+                      parentFragment.goToEnableChap()
+                   } else {
+                      parentFragment!!.hiddenSystemUI()
+                   }
+
+           }
+
+           alert.setTitle("")
+           mIsShowRemindPurchase = true
+                       Log.v(LOG_TAG, "-> ===show")
+           alert.show()
+       }
     }
 
     override fun onScrollChanged(l: Int, t: Int, oldl: Int, oldt: Int) {
-        if (mScrollListener != null) mScrollListener!!.onScrollChange(t)
-        super.onScrollChanged(l, t, oldl, oldt)
 
-        if (lastScrollType == LastScrollType.USER) {
-            //Log.d(LOG_TAG, "-> onScrollChanged -> scroll initiated by user");
+        if (parentFragment.shouldBlock) {
+            uiHandler.post {
+                showRemindReading()
+                // parentFragment.goToEnableChap()
+            }
+        }
+        if (!parentFragment.isHorizontal) {
+            var height = Math.floor((this.getContentHeight() * this.getScale()).toDouble());
+            var webViewHeight = this.getMeasuredHeight();  
+            if((this.getScrollY() + webViewHeight + 10) >= height && parentFragment.isFinishChapToday){ 
+                uiHandler.post {
+                     scrollTo(0, this.getScrollY() - 1)
+                     showRemindReading()
+                }
+            }
+        } else {
+            var d = getScrollXPixelsForPage(this.horizontalPageCount - 1)
+
+            if (parentFragment.isFinishChapToday && l + 5 > d) {
+                scrollTo(d-30, 0)
+                showRemindReading()
+            }
+        }
+
+        super.onScrollChanged(l, t, oldl, oldt)
+        if (mScrollListener != null) mScrollListener!!.onScrollChange(t)
+            Log.d(LOG_TAG, "-> onScrollChanged -> scroll initiated by user" + l);
             parentFragment.searchLocatorVisible = null
+        if (lastScrollType == LastScrollType.USER) {
+            
         }
 
         lastScrollType = null
@@ -461,8 +552,7 @@ class FolioWebView : WebView {
     }
 
     interface ScrollListener {
-        fun onScrollChange(percent: Int)
-    }
+        fun onScrollChange(percent: Int)    }
 
     interface SeekBarListener {
         fun fadeInSeekBarIfInvisible()

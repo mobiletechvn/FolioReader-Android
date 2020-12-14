@@ -13,6 +13,7 @@ import com.folioreader.Config;
 import com.folioreader.R;
 import com.folioreader.util.AppUtil;
 import com.folioreader.util.UiUtil;
+import android.util.Log;
 
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class LoadingView extends ConstraintLayout {
@@ -86,8 +87,7 @@ public class LoadingView extends ConstraintLayout {
     @SuppressWarnings("unused")
     @JavascriptInterface
     public void show() {
-        //Log.d(LOG_TAG, "-> show");
-
+Log.v("AppContext", "-> onCreate======");
         handler.removeCallbacks(hideRunnable);
         handler.post(new Runnable() {
             @Override

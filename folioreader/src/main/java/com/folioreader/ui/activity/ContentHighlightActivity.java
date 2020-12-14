@@ -163,9 +163,10 @@ public class ContentHighlightActivity extends AppCompatActivity {
         findViewById(R.id.btn_contents).setSelected(true);
         findViewById(R.id.btn_highlights).setSelected(false);
         String bookLink = getIntent().getStringExtra(FolioReader.EXTRA_LINK);
+        String enableChap = getIntent().getStringExtra(FolioReader.EXTRA_CHAP_ENABLE);
         TableOfContentFragment contentFrameLayout = TableOfContentFragment.newInstance(publication,
                 getIntent().getStringExtra(Constants.CHAPTER_SELECTED),
-                getIntent().getStringExtra(Constants.BOOK_TITLE), bookLink);
+                getIntent().getStringExtra(Constants.BOOK_TITLE), bookLink, enableChap);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.parent, contentFrameLayout);
         ft.commit();

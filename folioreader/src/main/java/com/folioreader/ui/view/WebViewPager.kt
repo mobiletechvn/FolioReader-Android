@@ -18,15 +18,17 @@ class WebViewPager : ViewPager {
         val LOG_TAG: String = WebViewPager::class.java.simpleName
     }
 
-    private var horizontalPageCount: Int = 0
+    var horizontalPageCount: Int = 0
     private var folioWebView: FolioWebView? = null
     private var takeOverScrolling: Boolean = false
     var isScrolling: Boolean = false
+    var isForward: Boolean = false
         private set
     private var uiHandler: Handler? = null
     private var gestureDetector: GestureDetectorCompat? = null
 
     private var lastGestureType: LastGestureType? = null
+    var positonXBlock: Int = 0
 
     private enum class LastGestureType {
         OnSingleTapUp, OnLongPress, OnFling, OnScroll
@@ -44,11 +46,11 @@ class WebViewPager : ViewPager {
 
         addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                // Log.d(LOG_TAG, "-> onPageScrolled -> position = " + position +
-                // ", positionOffset = " + positionOffset + ", positionOffsetPixels = " + positionOffsetPixels);
-
-                isScrolling = true
-
+                
+                Log.d(LOG_TAG, "-> onPageScrolled -> position = " + position +
+                 ", positionOffset = " + positionOffset + ", positionOffsetPixels = " + positionOffsetPixels);
+                   isScrolling = true
+                   // setPageToLast()
                 if (takeOverScrolling && folioWebView != null) {
                     val scrollX = folioWebView!!.getScrollXPixelsForPage(position) + positionOffsetPixels
                     //Log.d(LOG_TAG, "-> onPageScrolled -> scrollX = " + scrollX);
@@ -70,6 +72,10 @@ class WebViewPager : ViewPager {
         })
     }
 
+    fun scroll() {
+        folioWebView!!.scrollTo(-1, 0)
+    }
+
     private fun getScrollStateString(state: Int): String {
         return when (state) {
             ViewPager.SCROLL_STATE_IDLE -> "SCROLL_STATE_IDLE"
@@ -79,7 +85,7 @@ class WebViewPager : ViewPager {
         }
     }
 
-    fun setHorizontalPageCount(horizontalPageCount: Int) {
+    internal fun setHorizontalPageCount(horizontalPageCount: Int) {
         //Log.d(LOG_TAG, "-> horizontalPageCount = " + horizontalPageCount);
 
         this.horizontalPageCount = horizontalPageCount
@@ -112,12 +118,13 @@ class WebViewPager : ViewPager {
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
 
         override fun onDown(e: MotionEvent?): Boolean {
+            Log.v(LOG_TAG, "-> onDown ===->")
             super@WebViewPager.onTouchEvent(e)
             return true
         }
 
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
-            //Log.d(LOG_TAG, "-> onSingleTapUp");
+            Log.d(LOG_TAG, "-===> onSingleTapUp");
             lastGestureType = LastGestureType.OnSingleTapUp
             return false
         }
@@ -129,12 +136,19 @@ class WebViewPager : ViewPager {
         }
 
         override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
-            //Log.v(LOG_TAG, "-> onScroll -> e1 = " + e1 + ", e2 = " + e2 + ", distanceX = " + distanceX + ", distanceY = " + distanceY);
+            // Log.v(LOG_TAG, "-> onScroll error====-> e1 = " + e1 + ", e2 = " + e2 + ", distanceX = " + distanceX + ", distanceY = " + distanceY);
+
+            Log.d(LOG_TAG, "-> ======onScroll -> " + folioWebView!!.a);
+
+            isForward = folioWebView!!.isUp
+            positonXBlock = folioWebView!!.a
+          
             lastGestureType = LastGestureType.OnScroll
             return false
         }
 
         override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
+            Log.v(LOG_TAG, "-> onFling ===->" + folioWebView!!.a)
             //Log.d(LOG_TAG, "-> onFling -> e1 = " + e1 + ", e2 = " + e2 + ", velocityX = " + velocityX + ", velocityY = " + velocityY);
             lastGestureType = LastGestureType.OnFling
             return false

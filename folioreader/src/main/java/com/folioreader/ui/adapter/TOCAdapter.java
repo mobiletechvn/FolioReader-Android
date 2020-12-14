@@ -29,6 +29,8 @@ public class TOCAdapter extends MultiLevelExpIndListAdapter {
     private TOCCallback callback;
     private final Context mContext;
     private String selectedHref;
+    static String titleEnable;
+    static String hrefEnable;
     private Config mConfig;
 
     public TOCAdapter(Context context, ArrayList<TOCLinkWrapper> tocLinkWrappers, String selectedHref, Config config) {
@@ -40,6 +42,14 @@ public class TOCAdapter extends MultiLevelExpIndListAdapter {
 
     public void setCallback(TOCCallback callback) {
         this.callback = callback;
+    }
+
+    public static String getTitleEnable() {
+        return titleEnable;
+    }
+
+    public void setTitleEnable(String href) {
+        this.hrefEnable = href;
     }
 
     @Override
@@ -113,6 +123,24 @@ public class TOCAdapter extends MultiLevelExpIndListAdapter {
             viewHolder.sectionTitle.setTextColor(ContextCompat.getColor(mContext,
                     R.color.black));
         }
+        String title = tocLinkWrapper.getTocLink().getTitle();
+        String href = tocLinkWrapper.getTocLink().getHref();
+        href = href.replaceAll(("[^0-9 ]"), "");
+        String hrefEna = hrefEnable.replaceAll(("[^0-9 ]"), "");
+        Log.e("TAG", hrefEna + " status===");
+        Log.e("TAG", href + " status===2");
+
+        try {
+             if (Integer.valueOf(href) == Integer.valueOf(hrefEna)) {
+        Log.e("TAG", hrefEna + " status===aaaaaa");
+
+//            if (Integer.valueOf(href) == 2) {
+                titleEnable = tocLinkWrapper.getTocLink().getTitle();
+            }
+        } catch (Exception e) {
+
+        }
+
         if (tocLinkWrapper.getTocLink().getHref().equals(selectedHref)) {
             viewHolder.sectionTitle.setTextColor(mConfig.getThemeColor());
         }

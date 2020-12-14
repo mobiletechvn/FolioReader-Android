@@ -506,7 +506,6 @@ function goToAnchor(anchorId) {
 }
 
 function scrollToLast() {
-    console.log("-> scrollToLast");
 
     var direction = FolioWebView.getDirection();
     var scrollingElement = bodyOrHtml();
@@ -571,6 +570,47 @@ function horizontalRecheck() {
         clearInterval(horizontalInterval);
 }
 
+function initVerticalDirection() {
+    var htmlElement = document.getElementsByTagName('html')[0];
+    var bodyElement = document.getElementsByTagName('body')[0];
+    var bodyStyle = bodyElement.currentStyle || window.getComputedStyle(bodyElement);
+    var paddingTop = parseInt(bodyStyle.paddingTop, 10);
+    var paddingRight = parseInt(bodyStyle.paddingRight, 10);
+    var paddingBottom = parseInt(bodyStyle.paddingBottom, 10);
+    var paddingLeft = parseInt(bodyStyle.paddingLeft, 10);
+    var clientWidth = document.documentElement.clientHeight;
+
+    var scrollWidth = document.documentElement.scrollHeight;
+    console.log("-> document.documentElement.offsetWidth = " + document.documentElement.offsetParent);
+    if (scrollWidth > clientWidth
+        && scrollWidth > document.documentElement.offsetWidth) {
+        scrollWidth += paddingRight;
+    }
+    var newBodyWidth = scrollWidth - (paddingLeft + paddingRight);
+    // window.scrollWidth = scrollWidth;
+
+    // htmlElement.style.width = scrollWidth + 'px';
+    // bodyElement.style.width = newBodyWidth + 'px';
+    console.log("-> document.documentElement.offsetWidth = " + scrollWidth);
+    console.log("-> document.documentElement.clientWidth = " + clientWidth);
+
+    // pageCount deliberately rounded instead of ceiling to avoid any unexpected error
+    var pageCount = Math.round(scrollWidth / clientWidth);
+    var pageCountFloat = scrollWidth / clientWidth;
+    console.log("-> document.documentElement.pageCount = " + pageCount+ " Asdasdasd " + pageCountFloat);
+
+    if (pageCount != pageCountFloat) {
+        console.warn("-> pageCount = " + pageCount + ", pageCountFloat = " + pageCountFloat
+            + ", Something wrong in pageCount calculation");
+    }
+
+
+
+
+    console.log("-> scrollToLast"  , scrollingElement.scrollHeight, scrollingElement.clientHeight);
+    console.log("-> scrollToLast"  , scrollingElement.scrollWidth, scrollingElement.clientWidth);
+ }   
+
 function initHorizontalDirection() {
 
     preInitHorizontalDirection();
@@ -634,7 +674,7 @@ function postInitHorizontalDirection() {
     var clientWidth = document.documentElement.clientWidth;
 
     var scrollWidth = document.documentElement.scrollWidth;
-    //console.log("-> document.documentElement.offsetWidth = " + document.documentElement.offsetWidth);
+    console.log("-> document.documentElement.offsetWidth = " + document.documentElement.offsetWidth);
     if (scrollWidth > clientWidth
         && scrollWidth > document.documentElement.offsetWidth) {
         scrollWidth += paddingRight;
@@ -644,10 +684,13 @@ function postInitHorizontalDirection() {
 
     htmlElement.style.width = scrollWidth + 'px';
     bodyElement.style.width = newBodyWidth + 'px';
+    console.log("-> document.documentElement.offsetWidth = " + scrollWidth);
+    console.log("-> document.documentElement.clientWidth = " + clientWidth);
 
     // pageCount deliberately rounded instead of ceiling to avoid any unexpected error
     var pageCount = Math.round(scrollWidth / clientWidth);
     var pageCountFloat = scrollWidth / clientWidth;
+    console.log("-> document.documentElement.pageCount = " + pageCount+ " Asdasdasd " + pageCountFloat);
 
     if (pageCount != pageCountFloat) {
         console.warn("-> pageCount = " + pageCount + ", pageCountFloat = " + pageCountFloat

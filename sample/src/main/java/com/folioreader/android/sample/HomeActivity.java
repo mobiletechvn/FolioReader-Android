@@ -53,7 +53,8 @@ public class HomeActivity extends AppCompatActivity
         folioReader = FolioReader.get()
                 .setOnHighlightListener(this)
                 .setReadLocatorListener(this)
-                .setLinkPurchase("test")
+                .setLinkPurchase("")
+                .setChapEnable("6")
                 .setStatusTooltip("")
                 .setOnClosedListener(this);
 
@@ -67,6 +68,7 @@ public class HomeActivity extends AppCompatActivity
                 if (config == null)
                     config = new Config();
                 config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL);
+                // config.setAllowedDirection(Config.AllowedDirection.ONLY_VERTICAL);
                 folioReader.setConfig(config, true)
                         .openBook(R.raw.accessible_epub_3, "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
             }
@@ -85,8 +87,12 @@ public class HomeActivity extends AppCompatActivity
 
                 folioReader.setReadLocator(readLocator);
                 folioReader.setConfig(config, true)
+                       // .openBook("file:///android_asset/Sachvui.Com-so-tay-tieng-anh-trong-cong-viec-hanh-chinh-alphabooks-bien-soan.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
                         // .openBook("file:///android_asset/test.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
-                        .openBook("file:///android_asset/ray-kroc-da-tao-da-tao-nen-thuong-hieu-mcdonald-39-s-nhu-the-nao1594880865.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
+                        .openBook("file:///android_asset/es.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
+                        // .openBook("file:///android_asset/cau-chuyen-iphone-in1593159757.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
+                        // .openBook("file:///android_asset/tu-duy-nhanh-va-cham-xinhe1606297736.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
+                         // .openBook("file:///android_asset/ray-kroc-da-tao-da-tao-nen-thuong-hieu-mcdonald-39-s-nhu-the-nao1594880865.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
                         // .openBook("file:///android_asset/thuat-quan-tri1594890454.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
                         // .openBook("file:///android_asset/Sachvuicom-chieu-bai-quan-ly-vang-cua-bill-gates-thuong-mo.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
                         // .openBook("file:///android_asset/7-nguyen-tac-bat-bien-de-xay-dung-doanh-nghiep-nho1594352236.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
