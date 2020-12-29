@@ -566,7 +566,7 @@ class FolioPageFragment : Fragment(),
             override fun onScrollChange(percent: Int) {
     
                 var href = spineItem.href
-                val regrex = Regex("[^1-9 ]")
+                val regrex = Regex("[^0-9 ]")
                 href = href?.replace(regrex, "")
                 var chapEnable = mEnableChap?.replace(regrex, "")
 
@@ -865,10 +865,13 @@ class FolioPageFragment : Fragment(),
     }
 
     fun goToEnableChap() {
-        // mActivityCallback!!.goToChapter("")
-        if (!isNavigate) {
-            activity!!.runOnUiThread{ mActivityCallback!!.goToChapter("") }
-            isNavigate = true
+        try {
+            if (!isNavigate) {
+                activity!!.runOnUiThread{ mActivityCallback!!.goToChapter(this.mEnableChap) }
+                isNavigate = true
+            }
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "go enableChap error", e)
         }
 
         
