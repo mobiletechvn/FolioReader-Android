@@ -566,7 +566,7 @@ class FolioPageFragment : Fragment(),
             override fun onScrollChange(percent: Int) {
     
                 var href = spineItem.href
-                val regrex = Regex("[^0-9 ]")
+                val regrex = Regex("[^0-9]")
                 href = href?.replace(regrex, "")
                 var chapEnable = mEnableChap?.replace(regrex, "")
 
