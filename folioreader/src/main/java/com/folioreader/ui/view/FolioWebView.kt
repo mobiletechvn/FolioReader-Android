@@ -518,7 +518,6 @@ class FolioWebView : WebView {
         if (parentFragment.shouldBlock) {
             uiHandler.post {
                 showRemindReading()
-                // parentFragment.goToEnableChap()
             }
         }
         if (!parentFragment.isHorizontal) {
