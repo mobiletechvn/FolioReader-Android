@@ -487,7 +487,8 @@ class FolioWebView : WebView {
                           mIsShowRemindPurchase = false
                        }
                        if (parentFragment.shouldBlock) {
-                          parentFragment.goToEnableChap()
+                          // parentFragment.goToEnableChap()
+                          parentFragment!!.hiddenSystemUI()
                        } else {
                           parentFragment!!.hiddenSystemUI()
                        }
@@ -499,7 +500,8 @@ class FolioWebView : WebView {
                       mIsShowRemindPurchase = false
                    }
                    if (parentFragment.shouldBlock) {
-                      parentFragment.goToEnableChap()
+                      // parentFragment.goToEnableChap()
+                      parentFragment!!.hiddenSystemUI()
                    } else {
                       parentFragment!!.hiddenSystemUI()
                    }
@@ -514,12 +516,22 @@ class FolioWebView : WebView {
     }
 
     override fun onScrollChanged(l: Int, t: Int, oldl: Int, oldt: Int) {
+            Log.d(LOG_TAG, "-> onScrollChanged -> ===new" + l);
+            Log.d(LOG_TAG, "-> onScrollChanged -> ===old" + oldl);
+            Log.d(LOG_TAG, "-> onScrollChanged -> ===this.a" + this.a);
+            Log.d(LOG_TAG, "-> onScrollChanged -> ===compare" + (l > oldl));
 
-        if (parentFragment.shouldBlock) {
+        if (parentFragment.shouldBlock && l > (oldl+10)) {
+            scrollTo(0, 0)
+            super.onScrollChanged(-1,-1,-1,-1)
             uiHandler.post {
                 showRemindReading()
             }
+
+        } else {
+          super.onScrollChanged(l, t, oldl, oldt)
         }
+
         if (!parentFragment.isHorizontal) {
             var height = Math.floor((this.getContentHeight() * this.getScale()).toDouble());
             var webViewHeight = this.getMeasuredHeight();  
@@ -538,7 +550,6 @@ class FolioWebView : WebView {
             }
         }
 
-        super.onScrollChanged(l, t, oldl, oldt)
         if (mScrollListener != null) mScrollListener!!.onScrollChange(t)
             Log.d(LOG_TAG, "-> onScrollChanged -> scroll initiated by user" + l);
             parentFragment.searchLocatorVisible = null

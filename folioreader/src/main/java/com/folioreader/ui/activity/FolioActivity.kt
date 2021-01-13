@@ -625,7 +625,6 @@ on press back ==> Likely to destroy
         val searchLocatorVisible = folioPageFragment!!.searchLocatorVisible
 
         direction = newDirection
-
         mFolioPageViewPager!!.setDirection(newDirection)
         mFolioPageFragmentAdapter = FolioPageFragmentAdapter(
             supportFragmentManager,

@@ -878,9 +878,6 @@ class FolioPageFragment : Fragment(),
     }
 
     fun hiddenSystemUI() {
-        Log.v(
-            LOG_TAG, "-> hiddeeeee"
-        )
         mActivityCallback!!.hideSystemUI()
     }
 
