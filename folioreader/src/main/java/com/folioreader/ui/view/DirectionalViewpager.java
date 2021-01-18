@@ -346,7 +346,6 @@ public class DirectionalViewpager extends ViewGroup {
 
     @SuppressWarnings("PMD.UnnecessaryFullyQualifiedName")
     void initViewPager() {
-        new Handler().postDelayed(setBlock, 1500);
         setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
         setFocusable(true);
         final Context context = getContext();
@@ -544,6 +543,9 @@ public class DirectionalViewpager extends ViewGroup {
      * @param item Item index to select
      */
     public void setCurrentItem(int item) {
+        if (mBlockScroll) {
+          new Handler().postDelayed(setBlock, 1000);
+        }
         mPopulatePending = false;
         setCurrentItemInternal(item, !mFirstLayout, false);
     }
