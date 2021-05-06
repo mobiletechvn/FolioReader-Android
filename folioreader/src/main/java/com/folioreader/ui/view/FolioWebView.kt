@@ -228,8 +228,6 @@ class FolioWebView : WebView {
     private inner class VerticalGestureListener : GestureDetector.SimpleOnGestureListener() {
 
         override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
-            Log.v(LOG_TAG, "-> onScroll -> e1 = " + e1?.getX());
-            Log.v(LOG_TAG, "-> onScroll -> e1 = " + e2?.getY());
             lastScrollType = LastScrollType.USER
             return false
         }
@@ -486,12 +484,7 @@ class FolioWebView : WebView {
                        Timer("SettingUp", false).schedule(2500) {
                           mIsShowRemindPurchase = false
                        }
-                       if (parentFragment.shouldBlock) {
-                          // parentFragment.goToEnableChap()
-                          parentFragment!!.hiddenSystemUI()
-                       } else {
-                          parentFragment!!.hiddenSystemUI()
-                       }
+                       parentFragment!!.hiddenSystemUI()
                    })
 
            val alert = dialogBuilder.create()
@@ -499,12 +492,7 @@ class FolioWebView : WebView {
                    Timer("SettingUp", false).schedule(2500) {
                       mIsShowRemindPurchase = false
                    }
-                   if (parentFragment.shouldBlock) {
-                      // parentFragment.goToEnableChap()
-                      parentFragment!!.hiddenSystemUI()
-                   } else {
-                      parentFragment!!.hiddenSystemUI()
-                   }
+                   parentFragment!!.hiddenSystemUI()
 
            }
 
@@ -516,23 +504,23 @@ class FolioWebView : WebView {
     }
 
     override fun onScrollChanged(l: Int, t: Int, oldl: Int, oldt: Int) {
-            Log.d(LOG_TAG, "-> onScrollChanged -> ===new" + l);
-            Log.d(LOG_TAG, "-> onScrollChanged -> ===old" + oldl);
-            Log.d(LOG_TAG, "-> onScrollChanged -> ===this.a" + this.a);
-            Log.d(LOG_TAG, "-> onScrollChanged -> ===compare" + (l > oldl));
-
-        if (parentFragment.shouldBlock && l > (oldl+10)) {
-            scrollTo(0, 0)
-            super.onScrollChanged(-1,-1,-1,-1)
-            uiHandler.post {
-                showRemindReading()
-            }
-
-        } else {
-          super.onScrollChanged(l, t, oldl, oldt)
-        }
+        // Log.d(LOG_TAG, "-> onScrollChanged -> ===compare" + (l > oldl));
+        // Log.d(LOG_TAG, "-> onScrollChanged -> ===new" + l + " old " + oldl);
 
         if (!parentFragment.isHorizontal) {
+
+            //case should block
+            if (parentFragment.shouldBlock && t > (oldt+10)) {
+                scrollTo(0, 0)
+                super.onScrollChanged(0,0,0,0)
+                uiHandler.post {
+                    showRemindReading()
+                }
+            } else {
+              super.onScrollChanged(l, t, oldl, oldt)
+            }
+
+            //case finish enable chap
             var height = Math.floor((this.getContentHeight() * this.getScale()).toDouble());
             var webViewHeight = this.getMeasuredHeight();  
             if((this.getScrollY() + webViewHeight + 10) >= height && parentFragment.isFinishChapToday){ 
@@ -542,8 +530,20 @@ class FolioWebView : WebView {
                 }
             }
         } else {
-            var d = getScrollXPixelsForPage(this.horizontalPageCount - 1)
 
+            //case should block
+            if (parentFragment.shouldBlock && l > (oldl+10) && l > 0) {
+                scrollTo(50, 0)
+                super.onScrollChanged(50,0,0,0)
+                uiHandler.post {
+                    showRemindReading()
+                }
+            } else {
+              super.onScrollChanged(l, t, oldl, oldt)
+            }
+
+            //case finish enable chap
+            var d = getScrollXPixelsForPage(this.horizontalPageCount - 1)
             if (parentFragment.isFinishChapToday && l + 5 > d) {
                 scrollTo(d-30, 0)
                 showRemindReading()
@@ -551,7 +551,7 @@ class FolioWebView : WebView {
         }
 
         if (mScrollListener != null) mScrollListener!!.onScrollChange(t)
-            Log.d(LOG_TAG, "-> onScrollChanged -> scroll initiated by user" + l);
+            // Log.d(LOG_TAG, "-> onScrollChanged -> scroll initiated by user" + l);
             parentFragment.searchLocatorVisible = null
         if (lastScrollType == LastScrollType.USER) {
             

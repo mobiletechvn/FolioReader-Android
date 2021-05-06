@@ -74,8 +74,10 @@ import org.readium.r2.streamer.parser.PubBox
 import org.readium.r2.streamer.server.Server
 import java.lang.ref.WeakReference
 import android.widget.ImageView
+import android.widget.ImageButton
 import android.graphics.Color;
 import com.folioreader.ui.view.*
+import android.widget.LinearLayout
 
 class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControllerCallback,
     View.OnSystemUiVisibilityChangeListener {
@@ -104,6 +106,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
     private var mBookId: String? = null
     private var mLink: String? = null
+    private var mShareLink: String? = null
     private var mEnableChap: String? = null
     private var mStatusTooltip: String? = null
     private var statusTooltip: String? = ""
@@ -304,6 +307,7 @@ on press back ==> Likely to destroy
         mBookId = intent!!.getStringExtra(FolioReader.EXTRA_BOOK_ID)
         mLink = intent!!.getStringExtra(FolioReader.EXTRA_LINK)
         mEnableChap = intent!!.getStringExtra(FolioReader.EXTRA_CHAP_ENABLE)
+        mShareLink = intent!!.getStringExtra(FolioReader.EXTRA_SHARE_LINK)
         mStatusTooltip = intent!!.getStringExtra(FolioReader.EXTRA_STATUS_TOOLTIP)
 
         mEpubSourceType = intent!!.extras!!.getSerializable(FolioActivity.INTENT_EPUB_SOURCE_TYPE) as EpubSourceType
@@ -335,6 +339,17 @@ on press back ==> Likely to destroy
 
 
     private fun initActionBar() {
+      
+
+        // val imageButton = findViewById(R.id.imageButton) as ImageButton
+        // imageButton.setOnClickListener {
+        //     // onBackPressed()
+        //     var folioPageFragment: FolioPageFragment? = currentFragment
+
+        //     val entryReadLocator = folioPageFragment!!.getLastReadLocator()
+        //     Log.v(LOG_TAG, "-> entryReadLocator====" + entryReadLocator!!.locations)
+
+        // }
 
         appBarLayout = findViewById(R.id.appBarLayout)
         toolbar = findViewById(R.id.toolbar)
@@ -426,6 +441,12 @@ on press back ==> Likely to destroy
         UiUtil.setColorIntToDrawable(Color.GRAY, menu.findItem(R.id.itemConfig).icon)
         UiUtil.setColorIntToDrawable(Color.GRAY, menu.findItem(R.id.itemTts).icon)
 
+
+        //   val imageButton2 = menu.findItem(R.id.itemShare)
+        // imageButton2.setOnClickListener {
+    
+        // }
+
         if (!config.isShowTts)
             menu.findItem(R.id.itemTts).isVisible = false
 
@@ -466,6 +487,14 @@ on press back ==> Likely to destroy
             Log.v(LOG_TAG, "-> onOptionsItemSelected tts -> " + item.title)
             showMediaController()
             return true
+        } else if (itemId == R.id.itemShare) {
+                   val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.type="text/plain"
+            Log.v(LOG_TAG, "-> mShareLink -> " + mShareLink)
+
+            shareIntent.putExtra(Intent.EXTRA_TEXT, mShareLink);
+            startActivity(Intent.createChooser(shareIntent,getString(R.string.send_to)))
         }
 
         return super.onOptionsItemSelected(item)
@@ -764,15 +793,19 @@ on press back ==> Likely to destroy
 
     override fun onSystemUiVisibilityChange(visibility: Int) {
         // Log.v(LOG_TAG, "-> onSystemUiVisibilityChange -> visibility = $visibility")
+        // val shareLayout = findViewById(R.id.shareLayout) as LinearLayout
 
         distractionFreeMode = visibility != View.SYSTEM_UI_FLAG_VISIBLE
         // Log.v(LOG_TAG, "-> distractionFreeMode = $distractionFreeMode")
 
         if (actionBar != null) {
             if (distractionFreeMode) {
-                actionBar!!.hide()
+                // actionBar!!.hide()
+                // shareLayout.setVisibility(View.VISIBLE)
             } else {
-                actionBar!!.show()
+                // actionBar!!.show()
+                // shareLayout.setVisibility(View.GONE)
+
             }
         }
     }
@@ -787,6 +820,8 @@ on press back ==> Likely to destroy
     }
 
     private fun showSystemUI() {
+        Log.v(LOG_TAG, "-> onSaveInstanceState" +this.entryReadLocator)
+
         // Log.v(LOG_TAG, "-> showSystemUI")
         if (!distractionFreeMode) {
             return
@@ -1080,7 +1115,6 @@ on press back ==> Likely to destroy
      */
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        Log.v(LOG_TAG, "-> onSaveInstanceState")
         this.outState = outState
 
         outState.putBoolean(BUNDLE_DISTRACTION_FREE_MODE, distractionFreeMode)
