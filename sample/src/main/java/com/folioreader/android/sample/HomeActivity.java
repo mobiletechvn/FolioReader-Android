@@ -54,7 +54,8 @@ public class HomeActivity extends AppCompatActivity
                 .setOnHighlightListener(this)
                 .setReadLocatorListener(this)
                 .setLinkPurchase("")
-                .setChapEnable("6")
+                .setLinkShare("aaaaa")
+                .setChapEnable("9999")
                 .setStatusTooltip("")
                 .setOnClosedListener(this);
 
@@ -88,8 +89,8 @@ public class HomeActivity extends AppCompatActivity
                 folioReader.setReadLocator(readLocator);
                 folioReader.setConfig(config, true)
                        // .openBook("file:///android_asset/Sachvui.Com-so-tay-tieng-anh-trong-cong-viec-hanh-chinh-alphabooks-bien-soan.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
-                        // .openBook("file:///android_asset/test.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
-                        .openBook("file:///android_asset/es.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
+                        .openBook("file:///android_asset/chetvichungkhoan", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
+                        // .openBook("file:///android_asset/dich-vu-sung-sot-khach-hang-sung-so1595387547.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
                         // .openBook("file:///android_asset/cau-chuyen-iphone-in1593159757.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
                         // .openBook("file:///android_asset/tu-duy-nhanh-va-cham-xinhe1606297736.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");
                          // .openBook("file:///android_asset/ray-kroc-da-tao-da-tao-nen-thuong-hieu-mcdonald-39-s-nhu-the-nao1594880865.epub", "https://mkyong.com/java/jackson-2-convert-java-object-to-from-json/");

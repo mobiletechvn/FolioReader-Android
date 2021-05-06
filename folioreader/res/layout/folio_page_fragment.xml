@@ -11,7 +11,8 @@
         android:id="@+id/webViewLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/indicatorLayout">
+        android:layout_above="@+id/indicatorLayout"
+        android:paddingTop="120px">
 
         <com.folioreader.ui.view.WebViewPager
             android:id="@+id/webViewPager"

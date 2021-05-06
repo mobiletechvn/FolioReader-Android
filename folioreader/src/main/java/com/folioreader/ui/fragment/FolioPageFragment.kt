@@ -567,8 +567,13 @@ class FolioPageFragment : Fragment(),
     
                 var href = spineItem.href
                 val regrex = Regex("[^0-9]")
+                    Log.e(LOG_TAG, "->====== asdasdasdasdasd"+ href)
+
                 href = href?.replace(regrex, "")
+                    Log.e(LOG_TAG, "->====== asdasd"+ href)
                 var chapEnable = mEnableChap?.replace(regrex, "")
+                    Log.e(LOG_TAG, "->====== "+ chapEnable)
+                    Log.e(LOG_TAG, "->====== asdasd"+ href)
 
                 try {
                     if (Integer.valueOf(href) == Integer.valueOf(chapEnable)) {
@@ -666,7 +671,7 @@ class FolioPageFragment : Fragment(),
                 } else if (isCurrentFragment) {
 
                     if (mActivityCallback!!.getTooltipStep().count() < 2 && mStatusTooltip!!.count() > 0) {
-                      showGuidePopup()
+                      showGuidePopup2()
                       mActivityCallback!!.setTooltipStep()
                     }
             
