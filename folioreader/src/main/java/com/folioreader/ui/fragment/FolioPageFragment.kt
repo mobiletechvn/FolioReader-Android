@@ -11,6 +11,7 @@ import android.os.Handler
 import android.os.Parcelable
 import android.text.TextUtils
 import android.util.Log
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -532,6 +533,15 @@ class FolioPageFragment : Fragment(),
         }
     }
 
+    val statusBarHeight: Int
+        get() {
+            var result = 0
+            val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+            if (resourceId > 0)
+                result = resources.getDimensionPixelSize(resourceId)
+            return result
+        }
+
     @SuppressLint("JavascriptInterface", "SetJavaScriptEnabled")
     private fun initWebView() {
 
@@ -539,7 +549,13 @@ class FolioPageFragment : Fragment(),
         mWebview = webViewLayout.findViewById(R.id.folioWebView)
         mWebview!!.setParentFragment(this)
         webViewPager = webViewLayout.findViewById(R.id.webViewPager)
+        webViewLayout.setPadding(0, statusBarHeight+10,0,0)
 
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+          webViewLayout.setPadding(0, 210,0,0)
+        } else {
+          webViewLayout.setPadding(0, statusBarHeight+10,0,0)
+        }
         if (activity is FolioActivityCallback)
             mWebview!!.setFolioActivityCallback((activity as FolioActivityCallback?)!!)
 
