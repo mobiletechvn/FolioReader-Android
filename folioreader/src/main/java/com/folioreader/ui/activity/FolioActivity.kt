@@ -403,6 +403,9 @@ on press back ==> Likely to destroy
             window.navigationBarColor = color
         }
 
+
+        Log.v(LOG_TAG, "-> setDayMode"+statusBarHeight)
+
         if (Build.VERSION.SDK_INT < 16) {
             // Fix for appBarLayout.fitSystemWindows() not being called on API < 16
             appBarLayout!!.setTopMargin(statusBarHeight)
