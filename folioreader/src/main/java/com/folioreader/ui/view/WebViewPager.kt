@@ -72,10 +72,6 @@ class WebViewPager : ViewPager {
         })
     }
 
-    fun scroll() {
-        folioWebView!!.scrollTo(-1, 0)
-    }
-
     private fun getScrollStateString(state: Int): String {
         return when (state) {
             ViewPager.SCROLL_STATE_IDLE -> "SCROLL_STATE_IDLE"
