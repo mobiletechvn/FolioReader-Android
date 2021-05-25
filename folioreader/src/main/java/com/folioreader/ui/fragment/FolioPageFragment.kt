@@ -135,7 +135,6 @@ class FolioPageFragment : Fragment(),
     private var mActivityCallback: FolioActivityCallback? = null
 
     private var mTotalMinutes: Int = 0
-    var positonXBlockFrag: Int = 0
     private var mFadeInAnimation: Animation? = null
     private var mFadeOutAnimation: Animation? = null
 
@@ -549,8 +548,6 @@ class FolioPageFragment : Fragment(),
         mWebview = webViewLayout.findViewById(R.id.folioWebView)
         mWebview!!.setParentFragment(this)
         webViewPager = webViewLayout.findViewById(R.id.webViewPager)
-        webViewLayout.setPadding(0, statusBarHeight+10,0,0)
-
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
           webViewLayout.setPadding(0, 210,0,0)
         } else {

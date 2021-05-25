@@ -118,13 +118,11 @@ class WebViewPager : ViewPager {
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
 
         override fun onDown(e: MotionEvent?): Boolean {
-            Log.v(LOG_TAG, "-> onDown ===->")
             super@WebViewPager.onTouchEvent(e)
             return true
         }
 
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
-            Log.d(LOG_TAG, "-===> onSingleTapUp");
             lastGestureType = LastGestureType.OnSingleTapUp
             return false
         }
@@ -137,18 +135,11 @@ class WebViewPager : ViewPager {
 
         override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
             // Log.v(LOG_TAG, "-> onScroll error====-> e1 = " + e1 + ", e2 = " + e2 + ", distanceX = " + distanceX + ", distanceY = " + distanceY);
-
-            Log.d(LOG_TAG, "-> ======onScroll -> " + folioWebView!!.a);
-
-            isForward = folioWebView!!.isUp
-            positonXBlock = folioWebView!!.a
-          
             lastGestureType = LastGestureType.OnScroll
             return false
         }
 
         override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
-            Log.v(LOG_TAG, "-> onFling ===->" + folioWebView!!.a)
             //Log.d(LOG_TAG, "-> onFling -> e1 = " + e1 + ", e2 = " + e2 + ", velocityX = " + velocityX + ", velocityY = " + velocityY);
             lastGestureType = LastGestureType.OnFling
             return false
