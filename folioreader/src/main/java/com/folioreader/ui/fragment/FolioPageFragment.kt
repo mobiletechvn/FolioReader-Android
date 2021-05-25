@@ -584,7 +584,6 @@ class FolioPageFragment : Fragment(),
 
                 href = href?.replace(regrex, "")
                 var chapEnable = mEnableChap?.replace(regrex, "")
-                        Log.v(LOG_TAG, "-> onPageFinished -> took from bundle" + Integer.valueOf(chapEnable))
 
                 try {
                     if (Integer.valueOf(href) == Integer.valueOf(chapEnable)) {
