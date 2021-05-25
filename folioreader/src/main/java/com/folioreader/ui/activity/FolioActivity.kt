@@ -843,7 +843,7 @@ on press back ==> Likely to destroy
     }
 
     override fun hideSystemUI() {
-        // Log.v(LOG_TAG, "crollToFirst -> isPageLoading-> hideSystemUI")
+        Log.v(LOG_TAG, "crollToFirst -> isPageLoading-> hideSystemUI" + distractionFreeMode)
         if (distractionFreeMode) {
             return
         }
