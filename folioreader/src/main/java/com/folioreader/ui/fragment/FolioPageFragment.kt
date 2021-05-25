@@ -135,7 +135,6 @@ class FolioPageFragment : Fragment(),
     private var mActivityCallback: FolioActivityCallback? = null
 
     private var mTotalMinutes: Int = 0
-    var positonXBlockFrag: Int = 0
     private var mFadeInAnimation: Animation? = null
     private var mFadeOutAnimation: Animation? = null
 
@@ -549,8 +548,6 @@ class FolioPageFragment : Fragment(),
         mWebview = webViewLayout.findViewById(R.id.folioWebView)
         mWebview!!.setParentFragment(this)
         webViewPager = webViewLayout.findViewById(R.id.webViewPager)
-        webViewLayout.setPadding(0, statusBarHeight+10,0,0)
-
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
           webViewLayout.setPadding(0, 210,0,0)
         } else {
@@ -580,16 +577,14 @@ class FolioPageFragment : Fragment(),
 
         mWebview!!.setScrollListener(object : FolioWebView.ScrollListener {
             override fun onScrollChange(percent: Int) {
-    
+
+                mActivityCallback!!.hideSystemUI()
                 var href = spineItem.href
                 val regrex = Regex("[^0-9]")
-                    Log.e(LOG_TAG, "->====== asdasdasdasdasd"+ href)
 
                 href = href?.replace(regrex, "")
-                    Log.e(LOG_TAG, "->====== asdasd"+ href)
                 var chapEnable = mEnableChap?.replace(regrex, "")
-                    Log.e(LOG_TAG, "->====== "+ chapEnable)
-                    Log.e(LOG_TAG, "->====== asdasd"+ href)
+                        Log.v(LOG_TAG, "-> onPageFinished -> took from bundle" + Integer.valueOf(chapEnable))
 
                 try {
                     if (Integer.valueOf(href) == Integer.valueOf(chapEnable)) {
@@ -602,7 +597,6 @@ class FolioPageFragment : Fragment(),
                         shouldBlock = false
                     }
                 } catch (e: Exception) {
-                    Log.e(LOG_TAG, "->====== ", e)
                 }
                 // mScrollSeekbar!!.setProgressAndThumb(percent)
                 updatePagesLeftText(percent)
